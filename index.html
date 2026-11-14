@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>terminal-alert: a sound you cannot miss when Claude Code is waiting</title>
+  <meta name="description" content="Claude Code asked you a question and you were in another tab. terminal-alert plays a sound you cannot miss, even when your Mac is on mute. One command to install.">
+  <meta property="og:title" content="terminal-alert">
+  <meta property="og:description" content="A sound you cannot miss when Claude Code is waiting on you. Works even on mute.">
+  <meta name="theme-color" content="#2337ff">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232337ff'/%3E%3Crect x='7' y='7' width='18' height='18' rx='5' fill='%23ff5a3c'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <a class="skip" href="#machine">Skip to the sound machine</a>
+
+  <header class="top">
+    <a class="wordmark" href="/" aria-label="terminal-alert home">
+      <span class="wordmark-pad" aria-hidden="true"></span>terminal-alert
+    </a>
+    <nav aria-label="Site">
+      <a href="#ask-first">Ask-first prompt</a>
+      <a href="#how">How it works</a>
+      <a href="https://github.com/Sak3ham/terminal-alert">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Claude asked you a question <span class="late">20 minutes ago.</span></h1>
+      <p class="lede">You were in another tab. terminal-alert plays a sound you cannot miss the moment Claude Code needs you, even when your Mac is on mute.</p>
+
+      <div class="machine" id="machine">
+        <div class="panel slots" role="radiogroup" aria-labelledby="slots-title">
+          <h2 id="slots-title">Pick an alert, then hit a pad</h2>
+          <div class="slot" data-slot="question">
+            <button class="slot-arm" role="radio" aria-checked="true">
+              <span class="slot-name">Claude asks a question</span>
+              <span class="slot-sound"><span class="tag">ask</span><span data-sound-name>chime</span></span>
+            </button>
+            <label class="switch"><input type="checkbox" checked data-toggle><span class="switch-track" aria-hidden="true"></span><span class="sr">Alert me when Claude asks a question</span></label>
+          </div>
+          <div class="slot" data-slot="permission">
+            <button class="slot-arm" role="radio" aria-checked="false">
+              <span class="slot-name">Claude needs permission</span>
+              <span class="slot-sound"><span class="tag">allow</span><span data-sound-name>knock</span></span>
+            </button>
+            <label class="switch"><input type="checkbox" checked data-toggle><span class="switch-track" aria-hidden="true"></span><span class="sr">Alert me when Claude needs permission</span></label>
+          </div>
+          <div class="slot" data-slot="done">
+            <button class="slot-arm" role="radio" aria-checked="false">
+              <span class="slot-name">Claude finishes its turn</span>
+              <span class="slot-sound"><span class="tag">done</span><span data-sound-name>marimba</span></span>
+            </button>
+            <label class="switch"><input type="checkbox" data-toggle><span class="switch-track" aria-hidden="true"></span><span class="sr">Alert me when Claude finishes its turn</span></label>
+          </div>
+        </div>
+
+        <div class="panel pads-panel">
+          <div class="pads" id="pads" role="group" aria-label="Sounds. Press one to hear it and assign it to the selected alert."></div>
+          <ul class="legend" aria-label="Sound families">
+            <li><span class="swatch gentle"></span>Gentle</li>
+            <li><span class="swatch playful"></span>Playful</li>
+            <li><span class="swatch hard"></span>Hard to ignore</li>
+          </ul>
+        </div>
+
+        <div class="panel level">
+          <label for="volume">Forced volume <output id="volume-out" for="volume">70%</output></label>
+          <input type="range" id="volume" min="10" max="100" step="5" value="70">
+
+          <div class="mac" aria-live="polite">
+            <div class="mac-head">
+              <svg class="mac-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path class="mac-wave" d="M15.5 9a4.2 4.2 0 0 1 0 6M18 6.5a7.8 7.8 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="mac-cross" d="M15.5 9.5l5 5m0-5l-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <span id="mac-state">Your Mac: muted</span>
+            </div>
+            <div class="mac-meter"><span id="mac-bar"></span></div>
+            <p class="mac-note">Simulated. On your Mac the alert unmutes, plays at this volume, then puts everything back.</p>
+          </div>
+
+          <label class="check"><input type="checkbox" id="ask-first-flag"><span>Also make Claude ask before it builds</span></label>
+        </div>
+
+        <div class="panel out">
+          <div class="out-head">
+            <h2>Your install command</h2>
+            <button class="copy" id="copy-command" type="button">Copy</button>
+          </div>
+          <pre class="command"><code id="command"></code></pre>
+          <p class="out-note" id="out-note">Paste into Terminal on macOS, then restart Claude Code.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="prompt-section" id="ask-first">
+      <div class="prompt-copy">
+        <h2>An alert only helps if Claude stops to ask.</h2>
+        <p>Left alone, Claude often guesses, builds the wrong thing, and you pay for the tokens twice. This prompt makes it ask multiple-choice questions before anything complex. You answer in ten seconds and the work goes the right way the first time.</p>
+        <p>Paste it into <strong>claude.ai → Settings → Profile → personal preferences</strong>, or into <code>~/.claude/CLAUDE.md</code> for Claude Code. The installer can add it for you.</p>
+      </div>
+      <div class="prompt-card">
+        <button class="copy" id="copy-prompt" type="button">Copy prompt</button>
+        <pre id="prompt-text">Before starting any task that is complex, ambiguous, or expensive to redo, stop and ask me questions first.
+
+- Judge the request. If any answer of mine could change what you build, ask before doing any work.
+- Ask every such question in one round, as multiple choice or multi-select, with your recommended option first. Maximum four questions per round. In Claude Code, use the AskUserQuestion tool.
+- Ask only what you cannot find out yourself. Read the code, files and context first, and never ask me something they already answer.
+- Skip the questions when the request is already clear or the task is small. Do not ask for permission to do what I plainly asked for.
+- Start work only after I answer. If my answers open a new decision that changes the output, ask one more round, then build.</pre>
+      </div>
+    </section>
+
+    <section class="how" id="how">
+      <h2>What one command does to your Mac</h2>
+      <div class="how-grid">
+        <div class="how-main">
+          <p>It copies a small shell script and 16 sounds into <code>~/.terminal-alert</code>, then adds hooks to <code>~/.claude/settings.json</code> so Claude Code runs the script when it needs you. Nothing else is installed: no Node, no Python, no Homebrew.</p>
+          <p>When an alert fires, the script reads your volume and mute state, raises the volume only if it is below your chosen level, plays the sound, and restores exactly what it found. It runs in the background, so Claude is never slowed down.</p>
+          <p>Your other settings and hooks are left alone, and the previous file is backed up first. Every sound was synthesised for this project, so the pack is free to reuse.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Change your mind</dt><dd><code>terminal-alert set question airhorn</code></dd></div>
+          <div><dt>Use your own sound</dt><dd>Drop a .wav or .mp3 into <code>~/.terminal-alert/sounds</code></dd></div>
+          <div><dt>Headphones in</dt><dd>It plays in the headphones, not the speakers</dd></div>
+          <div><dt>Do Not Disturb</dt><dd>Does not silence it</dd></div>
+          <div><dt>Remove everything</dt><dd><code>terminal-alert uninstall</code></dd></div>
+          <div><dt>Runs on</dt><dd>macOS, for now</dd></div>
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <footer class="close">
+    <p class="close-line">Go back to your other tab. It will call you.</p>
+    <a class="close-cta" href="#machine">Build your command</a>
+    <p class="close-meta">Free and open source under MIT. Made by Saksham Bansal. <a href="https://github.com/Sak3ham/terminal-alert">Source on GitHub</a></p>
+  </footer>
+
+  <script src="site.js"></script>
+</body>
+</html>

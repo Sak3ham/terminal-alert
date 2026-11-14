@@ -5,6 +5,7 @@
 #
 # Skip the questions with flags:
 #   ... | bash -s -- --events question,permission --sound chime --volume 70 --ask-first
+#   ... | bash -s -- --question chime --done fanfare --volume 80
 #   ... | bash -s -- --yes        (defaults: question + permission alerts)
 set -e
 
@@ -20,11 +21,14 @@ fail() { printf 'terminal-alert: %s\n' "$1" >&2; exit 1; }
 [ "$(uname)" = "Darwin" ] || fail "macOS only for now. Windows and Linux are on the roadmap."
 
 # ---- flags -----------------------------------------------------------------
-EVENTS="" SOUND="" VOL="" ASK_FIRST="" YES=""
+EVENTS="" SOUND="" PICKS="" VOL="" ASK_FIRST="" YES=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --events) EVENTS=$(echo "$2" | tr ',' ' '); shift 2 ;;
     --sound) SOUND="$2"; shift 2 ;;
+    # One flag per alert turns it on and picks its sound: --question chime
+    --question|--permission|--done)
+      e="${1#--}"; EVENTS="$EVENTS $e"; PICKS="$PICKS $e=$2"; shift 2 ;;
     --volume) VOL="$2"; shift 2 ;;
     --ask-first) ASK_FIRST=yes; shift ;;
     --yes|-y) YES=yes; shift ;;
@@ -139,6 +143,10 @@ else
     has_sound "$SOUND" || fail "Unknown sound: $SOUND. Choose from: $(echo $SOUNDS)"
     for e in $EVENTS; do set_sound "$e" "$SOUND"; done
   fi
+  for pick in $PICKS; do
+    has_sound "${pick#*=}" || fail "Unknown sound: ${pick#*=}. Choose from: $(echo $SOUNDS)"
+    set_sound "${pick%%=*}" "${pick#*=}"
+  done
 fi
 
 for e in $EVENTS; do
