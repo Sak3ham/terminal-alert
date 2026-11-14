@@ -90,7 +90,7 @@ h1 {
 }
 /* The late part gets the marker, as the hook lines do on the Zomato project. */
 h1 mark {
-  background: var(--alert); color: #fff;
+  background: var(--alert-text); color: #fff;
   padding: 0 0.16em; border-radius: 0.14em;
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
 }
