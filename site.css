@@ -389,8 +389,8 @@ input[type="range"]::-moz-range-thumb {
 .prompt-copy .hand-note svg { width: 150px; height: 70px; margin-bottom: 14px; }
 
 .machine-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px 24px; }
-.note-toggle { flex: none; margin: 0 6px -22px 0; }
-.note-toggle svg { width: 96px; height: 46px; margin-bottom: -18px; transform: rotate(-58deg); }
+.note-toggle { flex: none; margin: 0 6px -6px 0; }
+.note-toggle svg { width: 96px; height: 46px; margin-bottom: -22px; transform: rotate(-58deg); }
 
 .note-keys { align-items: flex-start; justify-content: flex-end; margin: 14px 6px 0 0; }
 .note-keys svg { width: 84px; height: 49px; }
