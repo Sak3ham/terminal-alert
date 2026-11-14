@@ -61,19 +61,17 @@
         </div>
       </div>
 
-      <div class="pads" id="pads" role="group" aria-label="Sounds. Press one to hear it and assign it to the selected alert."></div>
-
       <form class="custom" id="custom-form" novalidate>
-        <div class="custom-head">
-          <label for="custom-url">Or use your own. Paste a link to an audio or video file.</label>
-          <p class="hand-note note-keys"><svg viewBox="0 0 124 72" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M112.4 56.8 C106.3 57.1, 85.9 62.4, 73.5 60.4 C61.1 58.4, 46.8 53.0, 38.0 44.8 C29.2 36.7, 23.3 17.0, 20.6 11.5 M110.7 59.7 C104.6 60.2, 85.3 63.9, 73.0 61.7 C60.7 59.4, 45.8 54.2, 37.0 46.0 C28.2 37.9, 23.0 18.5, 20.2 12.7"/><path d="M20.6 13.8 C19.9 15.0, 20.3 16.4, 20.5 27.1 M21.8 12.1 C21.5 15.1, 22.2 19.4, 21.1 26.3"/><path d="M20.6 13.8 C22.5 13.8, 25.5 13.9, 33.5 21.0 M21.8 12.1 C24.8 13.6, 29.0 16.2, 34.1 20.2"/></svg><span>Tap any key to hear it.</span></p>
-        </div>
+        <label for="custom-url">Or use your own. Paste a link to an audio or video file.</label>
         <div class="custom-row">
           <input type="url" id="custom-url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://example.com/sound.mp3" aria-describedby="custom-note">
           <button type="submit" class="custom-use" id="custom-use">Use for question</button>
         </div>
         <p class="custom-note" id="custom-note">Direct .mp3, .wav, .m4a or .mp4 links work, and so do myinstants.com pages. The installer downloads it for you.</p>
       </form>
+
+      <div class="pads" id="pads" role="group" aria-label="Sounds. Press one to hear it and assign it to the selected alert."></div>
+      <p class="hand-note note-keys"><svg viewBox="0 0 124 72" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M112.4 56.8 C106.3 57.1, 85.9 62.4, 73.5 60.4 C61.1 58.4, 46.8 53.0, 38.0 44.8 C29.2 36.7, 23.3 17.0, 20.6 11.5 M110.7 59.7 C104.6 60.2, 85.3 63.9, 73.0 61.7 C60.7 59.4, 45.8 54.2, 37.0 46.0 C28.2 37.9, 23.0 18.5, 20.2 12.7"/><path d="M20.6 13.8 C19.9 15.0, 20.3 16.4, 20.5 27.1 M21.8 12.1 C21.5 15.1, 22.2 19.4, 21.1 26.3"/><path d="M20.6 13.8 C22.5 13.8, 25.5 13.9, 33.5 21.0 M21.8 12.1 C24.8 13.6, 29.0 16.2, 34.1 20.2"/></svg><span>Tap any key to hear it.</span></p>
 
       <div class="controls">
         <div class="level">
