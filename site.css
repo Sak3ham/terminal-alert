@@ -20,6 +20,8 @@
   --alert: #ff5a36;       /* fills */
   --alert-text: #c93412;  /* reads at 4.5:1 on the page */
   --ok: #248a3d;
+  --marker: #ffe066;      /* highlighter behind hand notes */
+  --marker-ink: #f59f00;  /* sketched arrows */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   color-scheme: light;
 }
@@ -321,14 +323,39 @@ input[type="range"]::-moz-range-thumb {
 .prompt-card .copy:hover { background: #3a3a3c; }
 .prompt-card .copy.is-done { background: var(--ok); color: #fff; }
 
-/* A sketched note pointing at the prompt, Excalidraw style. */
-.prompt-copy .hand-note {
-  margin-top: 36px; display: flex; align-items: flex-end; gap: 6px;
-  font-family: var(--hand); font-size: clamp(19px, 1.8vw, 22px); line-height: 1.42;
+/* Sketched notes, Excalidraw style: hand lettering swiped with a yellow
+   highlighter, and a rough arrow to the thing the note is about. */
+.hand-note {
+  display: flex; align-items: flex-end; gap: 6px;
+  font-family: var(--hand); font-size: clamp(18px, 1.7vw, 21px); line-height: 1.6;
   color: #1e1e1e;
 }
-.hand-note span { max-width: 15em; transform: rotate(-2deg); transform-origin: left bottom; }
-.hand-note svg { flex: none; width: 150px; height: 70px; margin-bottom: 14px; color: var(--alert-text); }
+.hand-note span {
+  transform: rotate(-2deg);
+  background: linear-gradient(transparent 14%, var(--marker) 14% 90%, transparent 90%);
+  padding: 0 0.3em; border-radius: 0.2em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+.hand-note svg { flex: none; width: 124px; color: var(--marker-ink); }
+
+.prompt-copy .hand-note { margin-top: 36px; color: #1e1e1e; }
+.prompt-copy .hand-note > span { max-width: 15em; }
+.prompt-copy .hand-note svg { width: 150px; height: 70px; margin-bottom: 14px; }
+
+.machine-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px 24px; }
+.note-toggle { flex: none; margin: 0 6px -22px 0; }
+.note-toggle svg { width: 96px; height: 46px; margin-bottom: -18px; transform: rotate(-58deg); }
+
+.custom-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px 24px; }
+.note-keys { flex: none; align-items: flex-start; margin: -6px 6px 0 0; }
+.note-keys svg { width: 84px; height: 49px; margin-top: -14px; }
+.note-keys span, .note-volume span { margin-top: 20px; }
+
+.note-volume { align-items: flex-start; margin-top: 2px; }
+.note-volume svg { width: 84px; height: 49px; }
+
+.note-copy { justify-content: flex-end; margin: 26px 34px -4px 0; }
+.note-copy svg { width: 84px; height: 54px; margin-bottom: -16px; }
 
 /* ---- how --------------------------------------------------------------- */
 .how { padding-block: 150px 0; }
@@ -361,9 +388,16 @@ input[type="range"]::-moz-range-thumb {
 @media (max-width: 900px) {
   .pads { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .prompt-section, .how-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
-  .hand-note svg { transform: rotate(62deg); width: 110px; height: 52px; margin: 0 0 -6px 4px; }
+  .prompt-copy .hand-note svg { transform: rotate(62deg); width: 110px; height: 52px; margin: 0 0 -6px 4px; }
 }
 @media (max-width: 760px) {
+  .machine-head { flex-direction: column; align-items: flex-start; }
+  .note-toggle { margin: 4px 0 -6px; align-self: flex-end; font-size: 17px; }
+  .note-toggle span { white-space: nowrap; }
+  .note-toggle svg { width: 62px; height: 30px; margin: 0 4px -14px -6px; }
+  /* Stacked, the keys sit right above this note, so it goes first. */
+  .custom-head { flex-direction: column-reverse; align-items: flex-start; }
+  .note-keys { align-self: flex-end; margin: -4px 0 6px; }
   .slots { grid-template-columns: minmax(0, 1fr); }
   .controls { grid-template-columns: minmax(0, 1fr); gap: 28px; }
 }

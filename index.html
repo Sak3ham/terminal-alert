@@ -32,7 +32,10 @@
     </section>
 
     <section class="machine" id="machine">
-      <h2 id="slots-title">Pick an alert, then pick its sound.</h2>
+      <div class="machine-head">
+        <h2 id="slots-title">Pick an alert, then pick its sound.</h2>
+        <p class="hand-note note-toggle"><span>Don't need one? Switch it off.</span><svg viewBox="0 0 160 76" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M148.3 11.1 C144.1 16.6, 133.4 36.0, 120.8 44.3 C108.2 52.7, 90.3 58.6, 72.6 61.5 C54.9 64.3, 24.5 61.4, 14.7 61.4 M146.5 10.3 C142.9 16.0, 136.4 33.5, 123.9 41.6 C111.5 49.8, 90.0 55.6, 71.9 59.0 C53.8 62.5, 25.4 62.2, 15.5 62.5"/><path d="M15.3 60.6 C17.1 64.0, 21.2 65.6, 26.6 69.0 M14.8 62.8 C17.9 64.4, 21.1 65.7, 27.0 69.0"/><path d="M15.3 60.6 C17.0 61.2, 20.9 59.8, 26.1 54.6 M14.8 62.8 C17.8 61.0, 21.0 59.0, 26.5 54.6"/></svg></p>
+      </div>
 
       <div class="slots" role="radiogroup" aria-labelledby="slots-title">
         <div class="slot" data-slot="question">
@@ -61,7 +64,10 @@
       <div class="pads" id="pads" role="group" aria-label="Sounds. Press one to hear it and assign it to the selected alert."></div>
 
       <form class="custom" id="custom-form" novalidate>
-        <label for="custom-url">Or use your own. Paste a link to an audio or video file.</label>
+        <div class="custom-head">
+          <label for="custom-url">Or use your own. Paste a link to an audio or video file.</label>
+          <p class="hand-note note-keys"><svg viewBox="0 0 124 72" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M112.4 56.8 C106.3 57.1, 85.9 62.4, 73.5 60.4 C61.1 58.4, 46.8 53.0, 38.0 44.8 C29.2 36.7, 23.3 17.0, 20.6 11.5 M110.7 59.7 C104.6 60.2, 85.3 63.9, 73.0 61.7 C60.7 59.4, 45.8 54.2, 37.0 46.0 C28.2 37.9, 23.0 18.5, 20.2 12.7"/><path d="M20.6 13.8 C19.9 15.0, 20.3 16.4, 20.5 27.1 M21.8 12.1 C21.5 15.1, 22.2 19.4, 21.1 26.3"/><path d="M20.6 13.8 C22.5 13.8, 25.5 13.9, 33.5 21.0 M21.8 12.1 C24.8 13.6, 29.0 16.2, 34.1 20.2"/></svg><span>Tap any key to hear it.</span></p>
+        </div>
         <div class="custom-row">
           <input type="url" id="custom-url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://example.com/sound.mp3" aria-describedby="custom-note">
           <button type="submit" class="custom-use" id="custom-use">Use for question</button>
@@ -73,6 +79,7 @@
         <div class="level">
           <label for="volume">Forced volume <output id="volume-out" for="volume">70%</output></label>
           <input type="range" id="volume" min="10" max="100" step="5" value="70">
+          <p class="hand-note note-volume"><svg viewBox="0 0 124 72" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M112.4 56.8 C106.3 57.1, 85.9 62.4, 73.5 60.4 C61.1 58.4, 46.8 53.0, 38.0 44.8 C29.2 36.7, 23.3 17.0, 20.6 11.5 M110.7 59.7 C104.6 60.2, 85.3 63.9, 73.0 61.7 C60.7 59.4, 45.8 54.2, 37.0 46.0 C28.2 37.9, 23.0 18.5, 20.2 12.7"/><path d="M20.6 13.8 C19.9 15.0, 20.3 16.4, 20.5 27.1 M21.8 12.1 C21.5 15.1, 22.2 19.4, 21.1 26.3"/><path d="M20.6 13.8 C22.5 13.8, 25.5 13.9, 33.5 21.0 M21.8 12.1 C24.8 13.6, 29.0 16.2, 34.1 20.2"/></svg><span>Louder is harder to ignore.</span></p>
         </div>
         <div class="mac" aria-live="polite">
           <div class="mac-head">
@@ -83,6 +90,8 @@
           <p class="mac-note">Simulated. The real alert unmutes, plays, then puts your volume back.</p>
         </div>
       </div>
+
+      <p class="hand-note note-copy"><span>Copy. Paste. Done.</span><svg viewBox="0 0 124 80" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M11.0 11.7 C18.1 11.9, 37.1 10.9, 50.5 14.5 C63.8 18.1, 81.0 24.1, 90.9 33.2 C100.9 42.4, 106.8 63.6, 110.1 69.4 M9.6 10.2 C17.3 10.5, 39.2 7.8, 53.4 11.9 C67.5 15.9, 84.8 25.5, 94.4 34.6 C103.9 43.8, 108.1 61.0, 110.5 66.6"/><path d="M109.7 66.2 C110.5 63.7, 109.1 62.1, 111.9 53.9 M109.1 68.0 C110.0 64.3, 110.0 58.8, 110.8 52.3"/><path d="M109.7 66.2 C108.0 65.1, 104.0 64.9, 99.1 60.7 M109.1 68.0 C106.4 66.2, 102.6 62.8, 98.1 59.0"/></svg></p>
 
       <div class="out">
         <div class="out-head">
