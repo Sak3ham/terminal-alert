@@ -6,10 +6,12 @@ You give Claude a big task and switch to something else. Twenty minutes later yo
 
 terminal-alert plays a sound the moment Claude needs you. It works even when your Mac is muted: it unmutes, raises the volume, plays the sound, then puts your volume back exactly as it was.
 
+**[terminal-alert.vercel.app](https://terminal-alert.vercel.app)**: hear all 16 sounds, pick one per alert, and copy a ready-made install command.
+
 ## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Sak3ham/terminal-alert/main/install.sh | bash
+curl -fsSL https://terminal-alert.vercel.app/install | bash
 ```
 
 The installer asks three things: when to alert you, which sound, and how loud. Then restart Claude Code.
@@ -71,11 +73,12 @@ Claude asks, the sound pulls you back, you answer in ten seconds, and the work g
 ## Install without the questions
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Sak3ham/terminal-alert/main/install.sh | bash -s -- --events question,permission --sound chime --volume 70 --ask-first
+curl -fsSL https://terminal-alert.vercel.app/install | bash -s -- --question chime --permission knock --volume 70 --ask-first
 ```
 
 | Flag | Meaning |
 |---|---|
+| `--question`, `--permission`, `--done` | Turn that alert on with the sound you name, e.g. `--done fanfare` |
 | `--events` | Comma-separated: `question`, `permission`, `done` |
 | `--sound` | One sound for all chosen alerts |
 | `--volume` | 0 to 100 |
