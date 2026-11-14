@@ -26,7 +26,8 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --events) EVENTS=$(echo "$2" | tr ',' ' '); shift 2 ;;
     --sound) SOUND="$2"; shift 2 ;;
-    # One flag per alert turns it on and picks its sound: --question chime
+    # One flag per alert turns it on and picks its sound, by name or by link:
+    #   --question uthjaa   --done https://example.com/sound.mp3
     --question|--permission|--done)
       e="${1#--}"; EVENTS="$EVENTS $e"; PICKS="$PICKS $e=$2"; shift 2 ;;
     --volume) VOL="$2"; shift 2 ;;
@@ -65,7 +66,7 @@ fi
 
 mkdir -p "$DIR/sounds"
 cp "$SRC/alert.sh" "$SRC/settings.js" "$SRC/prompt.md" "$DIR/"
-cp "$SRC"/sounds/*.wav "$DIR/sounds/"   # custom sounds already there are kept
+cp "$SRC"/sounds/*.wav "$SRC"/sounds/*.mp3 "$DIR/sounds/"   # custom sounds already there are kept
 chmod +x "$DIR/alert.sh"
 ALERT="$DIR/alert.sh"
 
@@ -78,6 +79,45 @@ SOUNDS=$("$ALERT" sounds)
 has_sound() { echo "$SOUNDS" | grep -qx "$1"; }
 get_sound() { eval "echo \"\$SOUND_$1\""; }
 set_sound() { eval "SOUND_$1=\"\$2\""; }
+
+# Use a sound from a link: a direct audio or video file, or a web page that
+# embeds one (a myinstants.com page, say). Saved as sounds/custom-<event>.<ext>.
+fetch_custom() { # fetch_custom <event> <url>
+  local event="$1" url="$2" tmp="$DIR/sounds/.download" media origin
+  download() {
+    curl -fsSL --proto '=https,http' --max-filesize 26214400 --max-time 60 \
+      -A "Mozilla/5.0" -o "$tmp" -- "$1" 2>/dev/null
+  }
+  # macOS decides the format partly from the extension, so try the likely ones.
+  keep_if_audio() {
+    local ext
+    for ext in mp3 m4a wav mp4 aiff mov; do
+      cp "$tmp" "$tmp.$ext"
+      if afinfo "$tmp.$ext" >/dev/null 2>&1; then
+        # Replace an earlier custom sound only once the new one is known good.
+        rm -f "$tmp" "$DIR/sounds/custom-$event".*
+        mv "$tmp.$ext" "$DIR/sounds/custom-$event.$ext"
+        return 0
+      fi
+      rm -f "$tmp.$ext"
+    done
+    return 1
+  }
+  download "$url" || fail "Could not download $url"
+  if ! keep_if_audio; then
+    # Not audio, so treat it as a page and look for the first audio file in it.
+    media=$(LC_ALL=C grep -oE "(https?:)?/[^\"' <>]+\.(mp3|m4a|wav)" "$tmp" | head -1)
+    rm -f "$tmp"
+    [ -n "$media" ] || fail "No audio found at $url. Use a direct link to an .mp3, .wav, .m4a or .mp4 file."
+    origin=$(echo "$url" | sed -E 's#^(https?://[^/]+).*#\1#')
+    case "$media" in
+      //*) media="https:$media" ;;
+      /*) media="$origin$media" ;;
+    esac
+    download "$media" && keep_if_audio || fail "Could not read audio from $url"
+  fi
+  set_sound "$event" "custom-$event"
+}
 
 pick_sound() { # pick_sound <event> <what it means>
   local event="$1" current choice
@@ -144,8 +184,13 @@ else
     for e in $EVENTS; do set_sound "$e" "$SOUND"; done
   fi
   for pick in $PICKS; do
-    has_sound "${pick#*=}" || fail "Unknown sound: ${pick#*=}. Choose from: $(echo $SOUNDS)"
-    set_sound "${pick%%=*}" "${pick#*=}"
+    case "${pick#*=}" in
+      http://*|https://*) fetch_custom "${pick%%=*}" "${pick#*=}" ;;
+      *)
+        has_sound "${pick#*=}" || fail "Unknown sound: ${pick#*=}. Choose from: $(echo $SOUNDS)"
+        set_sound "${pick%%=*}" "${pick#*=}"
+        ;;
+    esac
   done
 fi
 

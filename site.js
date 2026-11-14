@@ -3,12 +3,20 @@
   // Served from the site itself when deployed, so the command stays short.
   const INSTALL_URL = location.protocol === "https:" ? location.origin + "/install" : RAW_INSTALL;
 
+  // [id, label, file extension, seconds]
   const SOUNDS = [
-    ["uthjaa", "meme", "uth jaa"], ["aayein", "meme"], ["khatam", "meme"], ["chime", "gentle"],
-    ["knock", "gentle"], ["coin", "gentle"], ["airhorn", "hard"], ["alarm", "hard"],
+    ["uthjaa", "Uth jaa", "wav", 0.7], ["aayein", "Aayein", "wav", 0.6], ["khatam", "Khatam", "wav", 0.7],
+    ["baapre", "Are baap re", "mp3", 1.8], ["chaloo", "Chaloo", "mp3", 1.3], ["baigan", "Baigan", "mp3", 0.7],
+    ["chacha", "Chacha", "mp3", 1.2], ["lekinyesala", "Lekin ye sala", "mp3", 2.7], ["aag", "Aag", "mp3", 2.2],
+    ["boxbox", "Box box", "mp3", 1.3], ["quack", "Mac quack", "mp3", 1.2], ["fart", "Fart", "mp3", 0.4],
+    ["rizz", "Rizz", "mp3", 1.9], ["shocked", "Shocked", "mp3", 1.5], ["ack", "ACK", "mp3", 5.0],
+    ["cricket", "Awkward cricket", "mp3", 4.5], ["kuchupuchu", "Kuchu puchu", "mp3", 9.8], ["merijung", "Meri Jung", "mp3", 9.6],
+    ["bhojyam", "Bhojyam", "mp3", 10.6], ["dexter", "Dexter", "mp3", 10.7],
   ];
-  const TAGS = { question: "ask", permission: "allow", done: "done" };
+  const LABEL = Object.fromEntries(SOUNDS.map(([id, label]) => [id, label]));
+  const TAGS = { question: "question", permission: "permission", done: "finished" };
 
+  // A slot's sound is either a bundled id or { url } for a pasted link.
   const state = {
     armed: "question",
     volume: 70,
@@ -32,20 +40,27 @@
   const macBar = $("#mac-bar");
   const volumeEl = $("#volume");
   const volumeOut = $("#volume-out");
+  const customForm = $("#custom-form");
+  const customUrl = $("#custom-url");
+  const customUse = $("#custom-use");
+  const customNote = $("#custom-note");
+  const CUSTOM_HINT = customNote.textContent;
 
   // ---- pads ---------------------------------------------------------------
   const audio = {};
-  SOUNDS.forEach(([name, family, label = name]) => {
+  SOUNDS.forEach(([id, label, ext, secs]) => {
     const pad = document.createElement("button");
     pad.type = "button";
-    pad.className = "pad " + family;
-    pad.dataset.sound = name;
-    pad.innerHTML = `<span class="pad-name">${label}</span><span class="pad-tags"></span>`;
+    pad.className = "pad";
+    pad.dataset.sound = id;
+    pad.innerHTML =
+      `<span class="pad-name">${label}</span>` +
+      `<span class="pad-meta"><span class="pad-secs">${secs.toFixed(1)}s</span><span class="pad-tags"></span></span>`;
     pad.addEventListener("click", () => {
-      state.slots[state.armed].sound = name;
+      state.slots[state.armed].sound = id;
       // Picking a sound for an alert that is off is a clear ask to turn it on.
       state.slots[state.armed].on = true;
-      play(name, pad);
+      play(audio[id] || (audio[id] = new Audio(`sounds/${id}.${ext}`)), pad).catch(() => {});
       render();
     });
     padsEl.appendChild(pad);
@@ -54,26 +69,31 @@
   let playing = null;
   let macTimer = null;
 
-  function play(name, pad) {
-    if (playing) {
-      playing.audio.pause();
-      playing.pad.classList.remove("is-playing");
-    }
-    const clip = audio[name] || (audio[name] = new Audio(`sounds/${name}.wav`));
+  function play(clip, pad) {
+    stop();
     clip.currentTime = 0;
     clip.volume = state.volume / 100;
     playing = { audio: clip, pad };
-    pad.classList.add("is-playing");
+    if (pad) pad.classList.add("is-playing");
     showForced();
     const finish = () => {
       if (playing && playing.audio === clip) {
-        pad.classList.remove("is-playing");
+        if (pad) pad.classList.remove("is-playing");
         playing = null;
         showRestored();
       }
     };
     clip.onended = finish;
-    clip.play().catch(finish);
+    return clip.play().catch((err) => {
+      finish();
+      throw err;
+    });
+  }
+  function stop() {
+    if (!playing) return;
+    playing.audio.pause();
+    if (playing.pad) playing.pad.classList.remove("is-playing");
+    playing = null;
   }
 
   // The meter acts out what the real script does to a muted Mac.
@@ -127,11 +147,57 @@
     render();
   });
 
+  // ---- custom link --------------------------------------------------------
+  function parseLink(text) {
+    let url;
+    try {
+      url = new URL(text.trim());
+    } catch {
+      return null;
+    }
+    if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+    // href is percent-encoded, so it carries no spaces. Encode the one
+    // character that could end the shell quoting the command wraps it in.
+    return url.href.replace(/'/g, "%27");
+  }
+
+  function setCustomNote(text, isError) {
+    customNote.textContent = text;
+    customNote.classList.toggle("is-error", Boolean(isError));
+    customUrl.setAttribute("aria-invalid", String(Boolean(isError)));
+  }
+
+  customForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const href = parseLink(customUrl.value);
+    if (!href) {
+      setCustomNote("That is not a link. Paste a full address starting with https://", true);
+      customUrl.focus();
+      return;
+    }
+    const alert = TAGS[state.armed];
+    state.slots[state.armed].sound = { url: href };
+    state.slots[state.armed].on = true;
+    render();
+    // Preview where the browser can. Page links (myinstants) only resolve at install.
+    play(new Audio(href), null).then(
+      () => setCustomNote(`Playing your link. It is set for the ${alert} alert.`),
+      () => setCustomNote(`Set for the ${alert} alert. The browser cannot preview this link, but the installer will fetch it.`)
+    );
+  });
+  customUrl.addEventListener("input", () => setCustomNote(CUSTOM_HINT, false));
+
   // ---- command ------------------------------------------------------------
+  const isCustom = (sound) => typeof sound === "object";
+  const soundLabel = (sound) => (isCustom(sound) ? "Your link" : LABEL[sound]);
+
   function buildCommand() {
     const on = Object.keys(state.slots).filter((k) => state.slots[k].on);
     if (!on.length) return null;
-    const flags = on.map((k) => `--${k} ${state.slots[k].sound}`);
+    const flags = on.map((k) => {
+      const sound = state.slots[k].sound;
+      return `--${k} ${isCustom(sound) ? `'${sound.url}'` : sound}`;
+    });
     flags.push(`--volume ${state.volume}`);
     if (state.askFirst) flags.push("--ask-first");
     return { head: `curl -fsSL ${INSTALL_URL} | bash -s --`, flags };
@@ -148,29 +214,31 @@
       const arm = $(".slot-arm", el);
       arm.setAttribute("aria-checked", String(armed));
       arm.tabIndex = armed ? 0 : -1;
-      $("[data-sound-name]", el).textContent = slot.sound;
+      $("[data-sound-name]", el).textContent = soundLabel(slot.sound);
       $("[data-toggle]", el).checked = slot.on;
     });
 
     $$(".pad").forEach((pad) => {
-      const name = pad.dataset.sound;
-      const users = Object.keys(state.slots).filter((k) => state.slots[k].on && state.slots[k].sound === name);
-      pad.setAttribute("aria-pressed", String(state.slots[state.armed].sound === name));
+      const id = pad.dataset.sound;
+      const users = Object.keys(state.slots).filter((k) => state.slots[k].on && state.slots[k].sound === id);
+      pad.setAttribute("aria-pressed", String(state.slots[state.armed].sound === id));
       $(".pad-tags", pad).innerHTML = users.map((k) => `<span class="tag">${TAGS[k]}</span>`).join("");
       const uses = users.length ? `, used for ${users.map((k) => TAGS[k]).join(" and ")}` : "";
-      pad.setAttribute("aria-label", `${name}${uses}`);
+      pad.setAttribute("aria-label", `${LABEL[id]}${uses}`);
     });
+
+    customUse.textContent = `Use for ${TAGS[state.armed]}`;
 
     volumeOut.textContent = state.volume + "%";
     volumeEl.style.setProperty("--fill", ((state.volume - 10) / 90) * 100 + "%");
 
     const command = buildCommand();
     if (command) {
-      // Each flag stays on one line so a wrap never splits "--done fanfare".
+      // Each flag stays on one line where it can, so a wrap never splits "--done khatam".
       commandEl.replaceChildren(command.head + " ");
       command.flags.forEach((flag, i) => {
         const span = document.createElement("span");
-        span.className = "flag";
+        span.className = flag.includes("'") ? "flag is-long" : "flag";
         span.textContent = flag;
         commandEl.append(span, i < command.flags.length - 1 ? " " : "");
       });
