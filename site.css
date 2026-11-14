@@ -423,8 +423,20 @@ input[type="range"]::-moz-range-thumb {
 .hand-note svg { flex: none; width: 124px; color: var(--marker-ink); }
 
 .prompt-copy .hand-note { margin-top: 36px; color: #1e1e1e; }
-.prompt-copy .hand-note > span { max-width: 15em; }
-.prompt-copy .hand-note svg { width: 150px; height: 70px; margin-bottom: 14px; }
+/* The grinning peep, pleased with the tokens he saved, with his note and
+   an arrow to the prompt. */
+.note-prompt {
+  display: grid; grid-template-columns: 170px minmax(0, 1fr); grid-template-rows: auto auto;
+  column-gap: 8px; align-items: end;
+}
+.note-peep { grid-row: 1 / 3; width: 170px; height: auto; margin-left: -12px; }
+.note-prompt .note-text { background: none; padding: 0; transform: rotate(-2deg); max-width: 12em; align-self: end; }
+.note-prompt .note-text > span {
+  background: linear-gradient(transparent 14%, var(--marker) 14% 90%, transparent 90%);
+  padding: 0 0.3em; border-radius: 0.2em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+.prompt-copy .note-prompt svg { width: 130px; height: 60px; margin: 4px 0 18px 30px; }
 
 .machine-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px 24px; }
 .note-toggle { flex: none; margin: 0 6px -6px 0; }
@@ -475,7 +487,7 @@ input[type="range"]::-moz-range-thumb {
   .prompt-section, .how-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .hero { grid-template-columns: minmax(0, 1fr); gap: 56px; }
   .story { justify-self: start; max-width: 300px; margin-left: 12px; }
-  .prompt-copy .hand-note svg { transform: rotate(62deg); width: 110px; height: 52px; margin: 0 0 -6px 4px; }
+  .prompt-copy .note-prompt svg { transform: rotate(62deg); width: 90px; height: 42px; margin: 8px 0 0 40px; }
 }
 @media (max-width: 760px) {
   .machine-head { flex-direction: column; align-items: flex-start; }
