@@ -94,7 +94,7 @@ code { font-family: var(--mono); font-size: 0.88em; }
 h1 {
   font-size: clamp(40px, 7vw, 80px);
   font-weight: 700; line-height: 1.04; letter-spacing: -0.035em;
-  max-width: 13ch; text-wrap: balance;
+  max-width: 14ch; text-wrap: balance;
 }
 /* The late part gets the marker, as the hook lines do on the Zomato project. */
 h1 mark {
@@ -155,17 +155,25 @@ h2 {
 .switch input:focus-visible + .switch-track { outline: 2px solid var(--ink); outline-offset: 3px; }
 
 /* sound tiles */
-.pads { margin-top: 12px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.pads { margin-top: 16px; padding: 0 4px 4px 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+/* Sketched keys, the same build as the filter buttons on the portfolio: white,
+   an ink outline, and a hard ink shadow the key sinks into when pressed. */
 .pad {
-  min-width: 0; min-height: 68px; text-align: left;
-  border: 0; border-radius: 14px; background: var(--pill); color: var(--ink);
-  padding: 11px 13px;
+  --lift: 4px;
+  min-width: 0; min-height: 72px; text-align: left;
+  border: 2px solid #1e1e1e; border-radius: 14px; background: #fff; color: #1e1e1e;
+  padding: 10px 12px;
   display: flex; flex-direction: column; justify-content: space-between; gap: 6px;
-  transition: background-color 0.2s var(--ease), color 0.2s var(--ease), transform 0.2s var(--ease);
+  box-shadow: var(--lift) var(--lift) 0 #1e1e1e;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
 }
-.pad:hover { background: #dedee3; }
-.pad:active { transform: scale(0.97); }
-.pad-name { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; }
+@media (hover: hover) {
+  .pad:hover { transform: translate(-1px, -1px) rotate(-1.5deg); box-shadow: 5px 5px 0 #1e1e1e; }
+}
+.pad:active, .pad.is-playing {
+  transform: translate(var(--lift), var(--lift)); box-shadow: 0 0 0 #1e1e1e;
+}
+.pad-name { font-family: var(--hand); font-size: 18px; font-weight: 400; line-height: 1.2; }
 .pad-meta { display: flex; align-items: center; justify-content: space-between; gap: 6px; min-height: 18px; }
 .pad-secs { font-size: 12px; font-weight: 500; color: var(--muted); font-variant-numeric: tabular-nums; }
 .pad-tags { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 3px; }
@@ -173,12 +181,10 @@ h2 {
   font-size: 11px; font-weight: 600; line-height: 1;
   background: var(--ink); color: #fff; padding: 3px 6px; border-radius: 6px;
 }
-.pad[aria-pressed="true"] { background: var(--tile); color: #fff; }
-.pad[aria-pressed="true"] .pad-secs { color: #a1a1a6; }
-.pad[aria-pressed="true"] .tag { background: #fff; color: var(--ink); }
-.pad.is-playing { background: var(--alert); color: var(--ink); }
-.pad.is-playing .pad-secs { color: var(--ink); }
-.pad.is-playing .tag { background: var(--ink); color: #fff; }
+.pad[aria-pressed="true"] { background: #ffec99; }
+.pad[aria-pressed="true"] .pad-secs { color: #5c5c5c; }
+.pad.is-playing { background: #ffc9c9; }
+.pad.is-playing .pad-secs { color: #1e1e1e; }
 
 /* custom link */
 .custom { margin-top: 20px; }
