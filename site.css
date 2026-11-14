@@ -318,7 +318,7 @@ input[type="range"]::-moz-range-thumb {
 /* A sketched note pointing at the prompt, Excalidraw style. */
 .prompt-copy .hand-note {
   margin-top: 36px; display: flex; align-items: flex-end; gap: 6px;
-  font-family: var(--hand); font-size: clamp(19px, 1.8vw, 22px); line-height: 1.25;
+  font-family: var(--hand); font-size: clamp(19px, 1.8vw, 22px); line-height: 1.35;
   color: #1e1e1e;
 }
 .hand-note span { max-width: 15em; transform: rotate(-2deg); transform-origin: left bottom; }
