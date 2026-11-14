@@ -1,21 +1,21 @@
 #!/bin/bash
-# claude-nudge installer.
+# terminal-alert installer.
 #
-#   curl -fsSL https://raw.githubusercontent.com/Sak3ham/claude-nudge/main/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/Sak3ham/terminal-alert/main/install.sh | bash
 #
 # Skip the questions with flags:
 #   ... | bash -s -- --events question,permission --sound chime --volume 70 --ask-first
 #   ... | bash -s -- --yes        (defaults: question + permission alerts)
 set -e
 
-REPO="${CLAUDE_NUDGE_REPO:-Sak3ham/claude-nudge}"
-DIR="${CLAUDE_NUDGE_HOME:-$HOME/.claude-nudge}"
+REPO="${TERMINAL_ALERT_REPO:-Sak3ham/terminal-alert}"
+DIR="${TERMINAL_ALERT_HOME:-$HOME/.terminal-alert}"
 CLAUDE_MD="${CLAUDE_MD:-$HOME/.claude/CLAUDE.md}"
 ALL_EVENTS="question permission done"
 
 bold() { printf '\033[1m%s\033[0m\n' "$1"; }
 dim() { printf '\033[2m%s\033[0m\n' "$1"; }
-fail() { printf 'claude-nudge: %s\n' "$1" >&2; exit 1; }
+fail() { printf 'terminal-alert: %s\n' "$1" >&2; exit 1; }
 
 [ "$(uname)" = "Darwin" ] || fail "macOS only for now. Windows and Linux are on the roadmap."
 
@@ -48,7 +48,7 @@ SRC=""
 case "${BASH_SOURCE[0]:-}" in
   ''|bash|-) ;;
   *) here=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-     [ -f "$here/nudge.sh" ] && [ -d "$here/sounds" ] && SRC="$here" ;;
+     [ -f "$here/alert.sh" ] && [ -d "$here/sounds" ] && SRC="$here" ;;
 esac
 if [ -z "$SRC" ]; then
   TMP=$(mktemp -d)
@@ -56,21 +56,21 @@ if [ -z "$SRC" ]; then
   curl -fsSL "https://github.com/$REPO/archive/refs/heads/main.tar.gz" | tar -xz -C "$TMP" \
     || fail "Download failed. Check your connection and try again."
   SRC=$(find "$TMP" -mindepth 1 -maxdepth 1 -type d | head -1)
-  [ -f "$SRC/nudge.sh" ] || fail "Download looked wrong. Try again."
+  [ -f "$SRC/alert.sh" ] || fail "Download looked wrong. Try again."
 fi
 
 mkdir -p "$DIR/sounds"
-cp "$SRC/nudge.sh" "$SRC/settings.js" "$SRC/prompt.md" "$DIR/"
+cp "$SRC/alert.sh" "$SRC/settings.js" "$SRC/prompt.md" "$DIR/"
 cp "$SRC"/sounds/*.wav "$DIR/sounds/"   # custom sounds already there are kept
-chmod +x "$DIR/nudge.sh"
-NUDGE="$DIR/nudge.sh"
+chmod +x "$DIR/alert.sh"
+ALERT="$DIR/alert.sh"
 
 # ---- current choices, so re-running the installer keeps them ---------------
 VOLUME=70 SOUND_question=chime SOUND_permission=knock SOUND_done=marimba
 # shellcheck disable=SC1090
 [ -f "$DIR/config" ] && . "$DIR/config"
 
-SOUNDS=$("$NUDGE" sounds)
+SOUNDS=$("$ALERT" sounds)
 has_sound() { echo "$SOUNDS" | grep -qx "$1"; }
 get_sound() { eval "echo \"\$SOUND_$1\""; }
 set_sound() { eval "SOUND_$1=\"\$2\""; }
@@ -88,14 +88,14 @@ pick_sound() { # pick_sound <event> <what it means>
     if [ -z "$choice" ] && has_sound "$REPLY"; then choice="$REPLY"; fi
     if [ -z "$choice" ]; then echo "  Not a sound. Try a number from the list." > /dev/tty; continue; fi
     current="$choice"
-    "$NUDGE" preview "$current" &
+    "$ALERT" preview "$current" &
   done
   set_sound "$event" "$current"
 }
 
 if [ -n "$INTERACTIVE" ]; then
   echo > /dev/tty
-  bold "claude-nudge" > /dev/tty
+  bold "terminal-alert" > /dev/tty
   dim "A sound you cannot miss when Claude Code is waiting on you." > /dev/tty
   echo > /dev/tty
   bold "When should it alert you?" > /dev/tty
@@ -159,34 +159,34 @@ SOUND_done="$SOUND_done"
 EOF
 
 # shellcheck disable=SC2086
-"$NUDGE" enable $EVENTS > /dev/null
+"$ALERT" enable $EVENTS > /dev/null
 
 mkdir -p "$HOME/.local/bin"
-ln -sf "$NUDGE" "$HOME/.local/bin/claude-nudge"
+ln -sf "$ALERT" "$HOME/.local/bin/terminal-alert"
 
-if [ -n "$ASK_FIRST" ] && ! grep -q 'claude-nudge:ask-first' "$CLAUDE_MD" 2>/dev/null; then
+if [ -n "$ASK_FIRST" ] && ! grep -q 'terminal-alert:ask-first' "$CLAUDE_MD" 2>/dev/null; then
   mkdir -p "$(dirname "$CLAUDE_MD")"
   {
     [ -s "$CLAUDE_MD" ] && echo
-    echo '<!-- claude-nudge:ask-first -->'
+    echo '<!-- terminal-alert:ask-first -->'
     cat "$DIR/prompt.md"
-    echo '<!-- /claude-nudge:ask-first -->'
+    echo '<!-- /terminal-alert:ask-first -->'
   } >> "$CLAUDE_MD"
 fi
 
 # ---- done ------------------------------------------------------------------
 first=$(echo $EVENTS | cut -d' ' -f1)
-"$NUDGE" test "$first" &
+"$ALERT" test "$first" &
 
 echo
-bold "claude-nudge is on."
+bold "terminal-alert is on."
 for e in $EVENTS; do printf '  %-11s %s\n' "$e" "$(get_sound "$e")"; done
 echo "  volume      $VOLUME%"
 [ -n "$ASK_FIRST" ] && echo "  ask-first   added to $CLAUDE_MD"
 echo
 echo "Restart Claude Code, or open /hooks once, for it to take effect."
 case ":$PATH:" in
-  *":$HOME/.local/bin:"*) echo "Change anything later with: claude-nudge" ;;
-  *) echo "Change anything later with: $NUDGE" ;;
+  *":$HOME/.local/bin:"*) echo "Change anything later with: terminal-alert" ;;
+  *) echo "Change anything later with: $ALERT" ;;
 esac
 wait

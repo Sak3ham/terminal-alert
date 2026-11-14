@@ -1,15 +1,15 @@
-# claude-nudge
+# terminal-alert
 
 **A sound you cannot miss when Claude Code is waiting on you.**
 
 You give Claude a big task and switch to something else. Twenty minutes later you come back and nothing has moved, because Claude asked a question in the first minute and has been waiting ever since.
 
-claude-nudge plays a sound the moment Claude needs you. It works even when your Mac is muted: it unmutes, raises the volume, plays the sound, then puts your volume back exactly as it was.
+terminal-alert plays a sound the moment Claude needs you. It works even when your Mac is muted: it unmutes, raises the volume, plays the sound, then puts your volume back exactly as it was.
 
 ## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Sak3ham/claude-nudge/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Sak3ham/terminal-alert/main/install.sh | bash
 ```
 
 The installer asks three things: when to alert you, which sound, and how loud. Then restart Claude Code.
@@ -32,23 +32,23 @@ Pick any combination, each with its own sound:
 |---|---|---|
 | chime, doorbell, marimba, glass, bubble, sonar | coin, powerup, laser, robot, knock, fanfare | alarm, siren, airhorn, bell |
 
-Use your own: drop any `.wav`, `.mp3`, `.aiff` or `.m4a` into `~/.claude-nudge/sounds/` and select it by file name.
+Use your own: drop any `.wav`, `.mp3`, `.aiff` or `.m4a` into `~/.terminal-alert/sounds/` and select it by file name.
 
 ## Change things later
 
 ```bash
-claude-nudge status                 # what is on, which sounds, what volume
-claude-nudge sounds                 # list sounds
-claude-nudge preview airhorn        # hear one
-claude-nudge set question airhorn   # change a sound
-claude-nudge volume 80              # volume alerts are forced to
-claude-nudge enable done            # turn an alert on
-claude-nudge disable permission     # turn an alert off
-claude-nudge test question          # fire an alert the way Claude would
-claude-nudge uninstall              # remove everything
+terminal-alert status                 # what is on, which sounds, what volume
+terminal-alert sounds                 # list sounds
+terminal-alert preview airhorn        # hear one
+terminal-alert set question airhorn   # change a sound
+terminal-alert volume 80              # volume alerts are forced to
+terminal-alert enable done            # turn an alert on
+terminal-alert disable permission     # turn an alert off
+terminal-alert test question          # fire an alert the way Claude would
+terminal-alert uninstall              # remove everything
 ```
 
-If `claude-nudge` is not found, `~/.local/bin` is not on your PATH. Use `~/.claude-nudge/nudge.sh` instead.
+If `terminal-alert` is not found, `~/.local/bin` is not on your PATH. Use `~/.terminal-alert/alert.sh` instead.
 
 ## The other half: make Claude ask first
 
@@ -71,7 +71,7 @@ Claude asks, the sound pulls you back, you answer in ten seconds, and the work g
 ## Install without the questions
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Sak3ham/claude-nudge/main/install.sh | bash -s -- --events question,permission --sound chime --volume 70 --ask-first
+curl -fsSL https://raw.githubusercontent.com/Sak3ham/terminal-alert/main/install.sh | bash -s -- --events question,permission --sound chime --volume 70 --ask-first
 ```
 
 | Flag | Meaning |
@@ -84,15 +84,15 @@ curl -fsSL https://raw.githubusercontent.com/Sak3ham/claude-nudge/main/install.s
 
 ## How it works
 
-claude-nudge adds [hooks](https://code.claude.com/docs/en/hooks) to `~/.claude/settings.json`:
+terminal-alert adds [hooks](https://code.claude.com/docs/en/hooks) to `~/.claude/settings.json`:
 
 - `question` is a `PreToolUse` hook on the `AskUserQuestion` tool
 - `permission` is a `PermissionRequest` hook
 - `done` is a `Stop` hook
 
-Each hook runs `~/.claude-nudge/nudge.sh` in the background, so Claude is never slowed down. The script reads your current volume and mute state, raises the volume only if it is below your chosen level, plays the sound with `afplay`, and restores what it found.
+Each hook runs `~/.terminal-alert/alert.sh` in the background, so Claude is never slowed down. The script reads your current volume and mute state, raises the volume only if it is below your chosen level, plays the sound with `afplay`, and restores what it found.
 
-Your other settings and hooks are left untouched, and a copy of the previous file is saved as `settings.json.claude-nudge-backup` before any change. Uninstalling removes only what claude-nudge added.
+Your other settings and hooks are left untouched, and a copy of the previous file is saved as `settings.json.terminal-alert-backup` before any change. Uninstalling removes only what terminal-alert added.
 
 ## Good to know
 

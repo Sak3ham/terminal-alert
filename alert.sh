@@ -1,8 +1,8 @@
 #!/bin/bash
-# claude-nudge: a sound you cannot miss when Claude Code is waiting on you.
-# https://github.com/Sak3ham/claude-nudge
+# terminal-alert: a sound you cannot miss when Claude Code is waiting on you.
+# https://github.com/Sak3ham/terminal-alert
 
-DIR="${CLAUDE_NUDGE_HOME:-$HOME/.claude-nudge}"
+DIR="${TERMINAL_ALERT_HOME:-$HOME/.terminal-alert}"
 CONF="$DIR/config"
 SETTINGS="${CLAUDE_SETTINGS:-$HOME/.claude/settings.json}"
 EVENTS="question permission done"
@@ -115,8 +115,8 @@ cmd_sounds() {
 }
 
 cmd_set() {
-  is_event "$1" || { echo "Usage: claude-nudge set <question|permission|done> <sound>" >&2; exit 1; }
-  sound_file "$2" >/dev/null || { echo "Sound not found: $2. Run: claude-nudge sounds" >&2; exit 1; }
+  is_event "$1" || { echo "Usage: terminal-alert set <question|permission|done> <sound>" >&2; exit 1; }
+  sound_file "$2" >/dev/null || { echo "Sound not found: $2. Run: terminal-alert sounds" >&2; exit 1; }
   case "$1" in
     question) SOUND_question="$2" ;;
     permission) SOUND_permission="$2" ;;
@@ -129,7 +129,7 @@ cmd_set() {
 
 cmd_volume() {
   case "$1" in
-    ''|*[!0-9]*) echo "Usage: claude-nudge volume <0-100>" >&2; exit 1 ;;
+    ''|*[!0-9]*) echo "Usage: terminal-alert volume <0-100>" >&2; exit 1 ;;
   esac
   [ "$1" -le 100 ] || { echo "Volume must be 0 to 100" >&2; exit 1; }
   VOLUME="$1"
@@ -138,16 +138,16 @@ cmd_volume() {
 }
 
 cmd_enable() {
-  [ $# -gt 0 ] || { echo "Usage: claude-nudge enable <question|permission|done>..." >&2; exit 1; }
+  [ $# -gt 0 ] || { echo "Usage: terminal-alert enable <question|permission|done>..." >&2; exit 1; }
   for e in "$@"; do
     is_event "$e" || { echo "Unknown event: $e (use: $EVENTS)" >&2; exit 1; }
   done
-  osascript -l JavaScript "$DIR/settings.js" add "$SETTINGS" "$DIR/nudge.sh" "$@"
+  osascript -l JavaScript "$DIR/settings.js" add "$SETTINGS" "$DIR/alert.sh" "$@"
 }
 
 cmd_disable() {
-  [ $# -gt 0 ] || { echo "Usage: claude-nudge disable <question|permission|done>..." >&2; exit 1; }
-  osascript -l JavaScript "$DIR/settings.js" remove "$SETTINGS" "$DIR/nudge.sh" "$@"
+  [ $# -gt 0 ] || { echo "Usage: terminal-alert disable <question|permission|done>..." >&2; exit 1; }
+  osascript -l JavaScript "$DIR/settings.js" remove "$SETTINGS" "$DIR/alert.sh" "$@"
 }
 
 cmd_status() {
@@ -156,34 +156,34 @@ cmd_status() {
     printf '%-11s %s\n' "$e" "$(sound_for "$e")"
   done
   echo
-  osascript -l JavaScript "$DIR/settings.js" status "$SETTINGS" "$DIR/nudge.sh"
+  osascript -l JavaScript "$DIR/settings.js" status "$SETTINGS" "$DIR/alert.sh"
 }
 
 cmd_uninstall() {
-  osascript -l JavaScript "$DIR/settings.js" remove "$SETTINGS" "$DIR/nudge.sh" $EVENTS
+  osascript -l JavaScript "$DIR/settings.js" remove "$SETTINGS" "$DIR/alert.sh" $EVENTS
   # Take the ask-first rule back out of CLAUDE.md if the installer added it.
   local md="${CLAUDE_MD:-$HOME/.claude/CLAUDE.md}"
-  if grep -q 'claude-nudge:ask-first' "$md" 2>/dev/null; then
-    sed -i '' '/<!-- claude-nudge:ask-first -->/,/<!-- \/claude-nudge:ask-first -->/d' "$md"
+  if grep -q 'terminal-alert:ask-first' "$md" 2>/dev/null; then
+    sed -i '' '/<!-- terminal-alert:ask-first -->/,/<!-- \/terminal-alert:ask-first -->/d' "$md"
   fi
-  rm -f "$HOME/.local/bin/claude-nudge"
+  rm -f "$HOME/.local/bin/terminal-alert"
   rm -rf "$DIR"
-  echo "claude-nudge removed."
+  echo "terminal-alert removed."
 }
 
 usage() {
   cat <<EOF
-claude-nudge: a sound you cannot miss when Claude Code is waiting on you.
+terminal-alert: a sound you cannot miss when Claude Code is waiting on you.
 
-  claude-nudge status                    Show sounds, volume and active alerts
-  claude-nudge sounds                    List available sounds
-  claude-nudge preview <sound>           Hear a sound at the current volume
-  claude-nudge test [event]              Fire an alert the way Claude would
-  claude-nudge set <event> <sound>       Pick the sound for an alert
-  claude-nudge volume <0-100>            Volume alerts are forced to
-  claude-nudge enable <event>...         Turn alerts on
-  claude-nudge disable <event>...        Turn alerts off
-  claude-nudge uninstall                 Remove everything
+  terminal-alert status                    Show sounds, volume and active alerts
+  terminal-alert sounds                    List available sounds
+  terminal-alert preview <sound>           Hear a sound at the current volume
+  terminal-alert test [event]              Fire an alert the way Claude would
+  terminal-alert set <event> <sound>       Pick the sound for an alert
+  terminal-alert volume <0-100>            Volume alerts are forced to
+  terminal-alert enable <event>...         Turn alerts on
+  terminal-alert disable <event>...        Turn alerts off
+  terminal-alert uninstall                 Remove everything
 
 Events: question (Claude asks you something), permission (Claude needs
 approval), done (Claude finished its turn).

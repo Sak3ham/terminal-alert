@@ -1,8 +1,8 @@
-// Adds or removes claude-nudge hooks in Claude Code's settings.json.
+// Adds or removes terminal-alert hooks in Claude Code's settings.json.
 // Runs on the JavaScript engine built into macOS, so there is nothing to
-// install:  osascript -l JavaScript settings.js <add|remove|status> <settings.json> <nudge.sh> [events...]
+// install:  osascript -l JavaScript settings.js <add|remove|status> <settings.json> <alert.sh> [events...]
 //
-// Only hooks whose command points at nudge.sh are ever touched. Every other
+// Only hooks whose command points at alert.sh are ever touched. Every other
 // setting and hook in the file is written back unchanged.
 
 ObjC.import("Foundation");
@@ -111,7 +111,7 @@ function run(argv) {
   });
 
   var out = JSON.stringify(settings, null, 2) + "\n";
-  if (raw !== null && out !== raw) writeFile(path + ".claude-nudge-backup", raw);
+  if (raw !== null && out !== raw) writeFile(path + ".terminal-alert-backup", raw);
   writeFile(path, out);
   return (action === "add" ? "Alerts on: " : "Alerts off: ") + names.join(", ");
 }
