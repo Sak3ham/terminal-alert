@@ -281,12 +281,12 @@ h2 {
 .pad.is-playing .pad-secs { color: #1e1e1e; }
 
 /* custom link */
-.custom { margin-top: 52px; }
+.custom { margin-top: 52px; padding: 26px 28px 22px; background: var(--card); border-radius: 22px; box-shadow: inset 0 0 0 1px var(--line), 0 18px 40px -28px rgba(0, 0, 0, 0.3); }
 .custom > label { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
 .custom-row { margin-top: 12px; display: flex; gap: 10px; }
 .custom input {
   flex: 1; min-width: 0; height: 48px; padding: 0 16px;
-  border: 0; border-radius: 12px; background: var(--card);
+  border: 0; border-radius: 12px; background: var(--page);
   box-shadow: inset 0 0 0 1px var(--line);
   font-size: 15px; caret-color: var(--alert);
 }
@@ -309,7 +309,8 @@ h2 {
 }
 .keys-row .pads { margin-top: 0; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .level { position: sticky; top: 32px; }
-.level > label { display: flex; justify-content: space-between; align-items: baseline; font-size: 15px; font-weight: 600; }
+.level-card { padding: 22px 22px 20px; background: var(--card); border-radius: 22px; box-shadow: inset 0 0 0 1px var(--line), 0 18px 40px -28px rgba(0, 0, 0, 0.3); }
+.level-card > label { display: flex; justify-content: space-between; align-items: baseline; font-size: 15px; font-weight: 600; }
 .level output { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .level-note { margin-top: 12px; font-size: 13px; color: var(--muted); }
 .level-note.is-live { color: var(--alert-text); font-weight: 600; }
@@ -433,7 +434,7 @@ input[type="range"]::-moz-range-thumb {
 .note-keys svg { width: 84px; height: 49px; }
 .note-keys span { margin-top: 20px; }
 
-.note-volume { flex-direction: column; align-items: flex-start; margin-top: 18px; }
+.note-volume { flex-direction: column; align-items: flex-start; margin: 14px 0 0 14px; }
 .note-volume svg { width: 70px; height: 41px; margin-bottom: -6px; }
 
 .note-copy { justify-content: flex-end; margin: 64px 34px 4px 0; }
@@ -494,7 +495,7 @@ input[type="range"]::-moz-range-thumb {
   .close { margin-top: 120px; }
   .keys-row { margin-top: 44px; }
   .keys-row .pads { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-  .custom { margin-top: 36px; }
+  .custom { margin-top: 36px; padding: 20px 18px 18px; }
   .note-copy { margin-top: 36px; }
   .custom-row { flex-direction: column; }
   .custom input { flex: none; width: 100%; }
