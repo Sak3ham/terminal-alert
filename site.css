@@ -191,6 +191,14 @@ h2 {
 .pad:active, .pad.is-playing {
   transform: translate(var(--lift), var(--lift)); box-shadow: 0 0 0 #1e1e1e;
 }
+/* A sticker on the three keys we suggest, one per alert. */
+.pad { position: relative; }
+.pad-rec {
+  position: absolute; top: -11px; right: -7px; transform: rotate(3deg);
+  font-family: var(--hand); font-size: 13px; line-height: 1.5; white-space: nowrap;
+  background: var(--marker); color: #1e1e1e;
+  padding: 0 7px; border: 1.5px solid #1e1e1e; border-radius: 8px;
+}
 .pad-name { font-family: var(--hand); font-size: 18px; font-weight: 400; line-height: 1.2; }
 .pad-meta { display: flex; align-items: center; justify-content: space-between; gap: 6px; min-height: 18px; }
 .pad-secs { font-size: 12px; font-weight: 500; color: var(--muted); font-variant-numeric: tabular-nums; }

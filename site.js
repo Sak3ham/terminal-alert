@@ -3,9 +3,9 @@
   // Served from the site itself when deployed, so the command stays short.
   const INSTALL_URL = location.protocol === "https:" ? location.origin + "/install" : RAW_INSTALL;
 
-  // [id, label, file extension, seconds]
+  // [id, label, file extension, seconds, alert it is recommended for]
   const SOUNDS = [
-    ["uthjaa", "Uth jaa", "wav", 0.7], ["aayein", "Aayein", "wav", 0.6], ["khatam", "Khatam", "wav", 0.7],
+    ["uthjaa", "Uth jaa", "wav", 0.7, "question"], ["aayein", "Aayein", "wav", 0.6, "permission"], ["khatam", "Khatam", "wav", 0.7, "done"],
     ["baapre", "Are baap re", "mp3", 1.8], ["chaloo", "Chaloo", "mp3", 1.3], ["baigan", "Baigan", "mp3", 0.7],
     ["chacha", "Chacha", "mp3", 1.2], ["lekinyesala", "Lekin ye sala", "mp3", 2.7], ["aag", "Aag", "mp3", 2.2],
     ["boxbox", "Box box", "mp3", 1.3], ["quack", "Mac quack", "mp3", 1.2], ["fart", "Fart", "mp3", 0.4],
@@ -48,12 +48,14 @@
 
   // ---- pads ---------------------------------------------------------------
   const audio = {};
-  SOUNDS.forEach(([id, label, ext, secs]) => {
+  SOUNDS.forEach(([id, label, ext, secs, rec]) => {
     const pad = document.createElement("button");
     pad.type = "button";
     pad.className = "pad";
     pad.dataset.sound = id;
+    if (rec) pad.dataset.rec = TAGS[rec];
     pad.innerHTML =
+      (rec ? `<span class="pad-rec">best for ${TAGS[rec]}</span>` : "") +
       `<span class="pad-name">${label}</span>` +
       `<span class="pad-meta"><span class="pad-secs">${secs.toFixed(1)}s</span><span class="pad-tags"></span></span>`;
     pad.addEventListener("click", () => {
@@ -224,7 +226,8 @@
       pad.setAttribute("aria-pressed", String(state.slots[state.armed].sound === id));
       $(".pad-tags", pad).innerHTML = users.map((k) => `<span class="tag">${TAGS[k]}</span>`).join("");
       const uses = users.length ? `, used for ${users.map((k) => TAGS[k]).join(" and ")}` : "";
-      pad.setAttribute("aria-label", `${LABEL[id]}${uses}`);
+      const rec = pad.dataset.rec ? `, recommended for the ${pad.dataset.rec} alert` : "";
+      pad.setAttribute("aria-label", `${LABEL[id]}${rec}${uses}`);
     });
 
     customUse.textContent = `Use for ${TAGS[state.armed]}`;
