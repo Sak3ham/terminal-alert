@@ -20,6 +20,7 @@
   --alert: #ff5a36;       /* fills */
   --alert-text: #c93412;  /* reads at 4.5:1 on the page */
   --ok: #248a3d;
+  --sky: #74c0fc;         /* headline highlighter */
   --marker: #ffe066;      /* highlighter behind hand notes */
   --marker-ink: #f59f00;  /* sketched arrows */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -98,11 +99,26 @@ h1 {
   font-weight: 700; line-height: 1.04; letter-spacing: -0.035em;
   max-width: 14ch; text-wrap: balance;
 }
-/* The late part gets the marker, as the hook lines do on the Zomato project. */
+/* A sky-blue highlighter swiped under the stuck part, drawn in on load. */
 h1 mark {
-  background: var(--alert-text); color: #fff;
-  padding: 0 0.16em; border-radius: 0.14em;
+  color: inherit; padding: 0 0.08em; margin: 0 -0.08em;
+  background: linear-gradient(var(--sky), var(--sky)) no-repeat 0 82% / 100% 0.46em;
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+/* "stuck." strains against its spot every few seconds, then gives up. */
+.stuck { display: inline-block; transform-origin: 50% 90%; }
+@media (prefers-reduced-motion: no-preference) {
+  h1 mark { animation: swipe 0.9s var(--ease) 0.3s backwards; }
+  .stuck { animation: strain 4.5s ease-in-out 1.6s infinite; }
+}
+@keyframes swipe { from { background-size: 0% 0.46em; } }
+@keyframes strain {
+  0%, 78%, 100% { transform: none; }
+  81% { transform: translateX(-0.03em) rotate(-2deg); }
+  84% { transform: translateX(0.04em) rotate(2.5deg); }
+  87% { transform: translateX(-0.04em) rotate(-2.5deg); }
+  90% { transform: translateX(0.03em) rotate(1.5deg); }
+  94% { transform: translateX(-0.01em) rotate(-0.5deg); }
 }
 .lede {
   margin-top: 24px; max-width: 34em;
