@@ -4,10 +4,8 @@
   const INSTALL_URL = location.protocol === "https:" ? location.origin + "/install" : RAW_INSTALL;
 
   const SOUNDS = [
-    ["chime", "gentle"], ["doorbell", "gentle"], ["marimba", "gentle"], ["glass", "gentle"],
-    ["bubble", "gentle"], ["sonar", "gentle"], ["coin", "playful"], ["powerup", "playful"],
-    ["laser", "playful"], ["robot", "playful"], ["knock", "playful"], ["fanfare", "playful"],
-    ["alarm", "hard"], ["siren", "hard"], ["airhorn", "hard"], ["bell", "hard"],
+    ["uthjaa", "meme", "uth jaa"], ["aayein", "meme"], ["khatam", "meme"], ["chime", "gentle"],
+    ["knock", "gentle"], ["coin", "gentle"], ["airhorn", "hard"], ["alarm", "hard"],
   ];
   const TAGS = { question: "ask", permission: "allow", done: "done" };
 
@@ -16,9 +14,9 @@
     volume: 70,
     askFirst: false,
     slots: {
-      question: { on: true, sound: "chime" },
-      permission: { on: true, sound: "knock" },
-      done: { on: false, sound: "marimba" },
+      question: { on: true, sound: "uthjaa" },
+      permission: { on: true, sound: "aayein" },
+      done: { on: true, sound: "khatam" },
     },
   };
 
@@ -37,12 +35,12 @@
 
   // ---- pads ---------------------------------------------------------------
   const audio = {};
-  SOUNDS.forEach(([name, family]) => {
+  SOUNDS.forEach(([name, family, label = name]) => {
     const pad = document.createElement("button");
     pad.type = "button";
     pad.className = "pad " + family;
     pad.dataset.sound = name;
-    pad.innerHTML = `<span class="pad-name">${name}</span><span class="pad-tags"></span>`;
+    pad.innerHTML = `<span class="pad-name">${label}</span><span class="pad-tags"></span>`;
     pad.addEventListener("click", () => {
       state.slots[state.armed].sound = name;
       // Picking a sound for an alert that is off is a clear ask to turn it on.

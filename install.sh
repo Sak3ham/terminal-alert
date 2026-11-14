@@ -5,7 +5,7 @@
 #
 # Skip the questions with flags:
 #   ... | bash -s -- --events question,permission --sound chime --volume 70 --ask-first
-#   ... | bash -s -- --question chime --done fanfare --volume 80
+#   ... | bash -s -- --question uthjaa --done khatam --volume 80
 #   ... | bash -s -- --yes        (defaults: question + permission alerts)
 set -e
 
@@ -70,7 +70,7 @@ chmod +x "$DIR/alert.sh"
 ALERT="$DIR/alert.sh"
 
 # ---- current choices, so re-running the installer keeps them ---------------
-VOLUME=70 SOUND_question=chime SOUND_permission=knock SOUND_done=marimba
+VOLUME=70 SOUND_question=uthjaa SOUND_permission=aayein SOUND_done=khatam
 # shellcheck disable=SC1090
 [ -f "$DIR/config" ] && . "$DIR/config"
 

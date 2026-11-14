@@ -6,7 +6,7 @@ You give Claude a big task and switch to something else. Twenty minutes later yo
 
 terminal-alert plays a sound the moment Claude needs you. It works even when your Mac is muted: it unmutes, raises the volume, plays the sound, then puts your volume back exactly as it was.
 
-**[terminal-alert.vercel.app](https://terminal-alert.vercel.app)**: hear all 16 sounds, pick one per alert, and copy a ready-made install command.
+**[terminal-alert.vercel.app](https://terminal-alert.vercel.app)**: hear the sounds, pick one per alert, and copy a ready-made install command.
 
 ## Install
 
@@ -28,11 +28,17 @@ Pick any combination, each with its own sound:
 | `permission` | Claude needs your approval to run something |
 | `done` | Claude finishes its turn |
 
-## 16 sounds included
+## Sounds
 
-| Gentle | Playful | Hard to ignore |
-|---|---|---|
-| chime, doorbell, marimba, glass, bubble, sonar | coin, powerup, laser, robot, knock, fanfare | alarm, siren, airhorn, bell |
+Out of the box, three meme clips do the talking:
+
+| Alert | Default sound |
+|---|---|
+| `question` | `uthjaa`: "Uth jaa!" |
+| `permission` | `aayein`: "Aayein?" |
+| `done` | `khatam`: "Khatam." |
+
+Prefer something plainer? `chime`, `knock`, `coin`, `airhorn` and `alarm` are included too.
 
 Use your own: drop any `.wav`, `.mp3`, `.aiff` or `.m4a` into `~/.terminal-alert/sounds/` and select it by file name.
 
@@ -73,7 +79,7 @@ Claude asks, the sound pulls you back, you answer in ten seconds, and the work g
 ## Install without the questions
 
 ```bash
-curl -fsSL https://terminal-alert.vercel.app/install | bash -s -- --question chime --permission knock --volume 70 --ask-first
+curl -fsSL https://terminal-alert.vercel.app/install | bash -s -- --question uthjaa --permission aayein --done khatam --volume 70 --ask-first
 ```
 
 | Flag | Meaning |
@@ -106,4 +112,6 @@ Your other settings and hooks are left untouched, and a copy of the previous fil
 
 ## Sounds and licence
 
-Every bundled sound is synthesised by [`sounds/generate.py`](sounds/generate.py), so the pack is original and free to reuse. MIT licence.
+The code and the five synthesised sounds (built by [`sounds/generate.py`](sounds/generate.py)) are MIT licensed.
+
+The three meme clips are third-party audio and are not covered by that licence. Sources and takedown contact are in [`sounds/THIRD-PARTY.md`](sounds/THIRD-PARTY.md).

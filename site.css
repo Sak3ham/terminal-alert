@@ -221,7 +221,7 @@ h1 {
   padding: clamp(0.4rem, 0.9vw, 0.6rem);
   text-align: left;
 }
-.pad.playful { --face: var(--sun); --edge: var(--sun-deep); }
+.pad.meme { --face: var(--sun); --edge: var(--sun-deep); }
 .pad.hard { --face: var(--tomato); --edge: var(--tomato-deep); }
 .pad-name { font-weight: 700; font-size: clamp(0.72rem, 1.05vw, 0.92rem); line-height: 1.1; }
 .pad-tags { display: flex; flex-wrap: wrap; gap: 0.2rem; min-height: 1.1rem; }
@@ -245,7 +245,7 @@ h1 {
 }
 .legend li { display: inline-flex; align-items: center; gap: 0.4rem; }
 .swatch { width: 0.7rem; height: 0.7rem; border-radius: 0.2rem; background: var(--mint); }
-.swatch.playful { background: var(--sun); }
+.swatch.meme { background: var(--sun); }
 .swatch.hard { background: var(--tomato); }
 
 /* level */

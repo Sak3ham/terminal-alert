@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Synthesises the bundled alert sounds. Pure standard library.
+"""Synthesises the original alert sounds. Pure standard library.
 
-Every sound here is generated from maths, so the pack is original and
-free to redistribute. Run `python3 sounds/generate.py` to rebuild.
+Every sound here is generated from maths, so these are original and free
+to redistribute. The meme clips in this folder are separate: see
+THIRD-PARTY.md. Run `python3 sounds/generate.py` to rebuild.
 """
 import math
 import os
@@ -195,6 +196,10 @@ SOUNDS = {
     "bell": tone(261.63, 2.6, harmonics=CHURCH, decay=0.8, attack=0.002),
 }
 
+# The pack ships a small set. The rest stay here as recipes: add a name to
+# SHIPPED and rerun to build it.
+SHIPPED = ("chime", "knock", "coin", "airhorn", "alarm")
+
 if __name__ == "__main__":
-    for name, samples in SOUNDS.items():
-        write(name, samples)
+    for name in SHIPPED:
+        write(name, SOUNDS[name])

@@ -39,31 +39,31 @@
           <div class="slot" data-slot="question">
             <button class="slot-arm" role="radio" aria-checked="true">
               <span class="slot-name">Claude asks a question</span>
-              <span class="slot-sound"><span class="tag">ask</span><span data-sound-name>chime</span></span>
+              <span class="slot-sound"><span class="tag">ask</span><span data-sound-name>uthjaa</span></span>
             </button>
             <label class="switch"><input type="checkbox" checked data-toggle><span class="switch-track" aria-hidden="true"></span><span class="sr">Alert me when Claude asks a question</span></label>
           </div>
           <div class="slot" data-slot="permission">
             <button class="slot-arm" role="radio" aria-checked="false">
               <span class="slot-name">Claude needs permission</span>
-              <span class="slot-sound"><span class="tag">allow</span><span data-sound-name>knock</span></span>
+              <span class="slot-sound"><span class="tag">allow</span><span data-sound-name>aayein</span></span>
             </button>
             <label class="switch"><input type="checkbox" checked data-toggle><span class="switch-track" aria-hidden="true"></span><span class="sr">Alert me when Claude needs permission</span></label>
           </div>
           <div class="slot" data-slot="done">
             <button class="slot-arm" role="radio" aria-checked="false">
               <span class="slot-name">Claude finishes its turn</span>
-              <span class="slot-sound"><span class="tag">done</span><span data-sound-name>marimba</span></span>
+              <span class="slot-sound"><span class="tag">done</span><span data-sound-name>khatam</span></span>
             </button>
-            <label class="switch"><input type="checkbox" data-toggle><span class="switch-track" aria-hidden="true"></span><span class="sr">Alert me when Claude finishes its turn</span></label>
+            <label class="switch"><input type="checkbox" checked data-toggle><span class="switch-track" aria-hidden="true"></span><span class="sr">Alert me when Claude finishes its turn</span></label>
           </div>
         </div>
 
         <div class="panel pads-panel">
           <div class="pads" id="pads" role="group" aria-label="Sounds. Press one to hear it and assign it to the selected alert."></div>
           <ul class="legend" aria-label="Sound families">
+            <li><span class="swatch meme"></span>Memes</li>
             <li><span class="swatch gentle"></span>Gentle</li>
-            <li><span class="swatch playful"></span>Playful</li>
             <li><span class="swatch hard"></span>Hard to ignore</li>
           </ul>
         </div>
@@ -117,12 +117,12 @@
       <h2>What one command does to your Mac</h2>
       <div class="how-grid">
         <div class="how-main">
-          <p>It copies a small shell script and 16 sounds into <code>~/.terminal-alert</code>, then adds hooks to <code>~/.claude/settings.json</code> so Claude Code runs the script when it needs you. Nothing else is installed: no Node, no Python, no Homebrew.</p>
+          <p>It copies a small shell script and 8 sounds into <code>~/.terminal-alert</code>, then adds hooks to <code>~/.claude/settings.json</code> so Claude Code runs the script when it needs you. Nothing else is installed: no Node, no Python, no Homebrew.</p>
           <p>When an alert fires, the script reads your volume and mute state, raises the volume only if it is below your chosen level, plays the sound, and restores exactly what it found. It runs in the background, so Claude is never slowed down.</p>
-          <p>Your other settings and hooks are left alone, and the previous file is backed up first. Every sound was synthesised for this project, so the pack is free to reuse.</p>
+          <p>Your other settings and hooks are left alone, and the previous file is backed up first.</p>
         </div>
         <dl class="facts">
-          <div><dt>Change your mind</dt><dd><code>terminal-alert set question airhorn</code></dd></div>
+          <div><dt>Change your mind</dt><dd><code>terminal-alert set done airhorn</code></dd></div>
           <div><dt>Use your own sound</dt><dd>Drop a .wav or .mp3 into <code>~/.terminal-alert/sounds</code></dd></div>
           <div><dt>Headphones in</dt><dd>It plays in the headphones, not the speakers</dd></div>
           <div><dt>Do Not Disturb</dt><dd>Does not silence it</dd></div>
@@ -136,7 +136,7 @@
   <footer class="close">
     <p class="close-line">Go back to your other tab. It will call you.</p>
     <a class="close-cta" href="#machine">Build your command</a>
-    <p class="close-meta">Free and open source under MIT. Made by Saksham Bansal. <a href="https://github.com/Sak3ham/terminal-alert">Source on GitHub</a></p>
+    <p class="close-meta">Free and open source under MIT. Meme clips belong to their owners. Made by Saksham Bansal. <a href="https://github.com/Sak3ham/terminal-alert">Source on GitHub</a></p>
   </footer>
 
   <script src="site.js"></script>

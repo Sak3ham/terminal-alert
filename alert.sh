@@ -9,9 +9,9 @@ EVENTS="question permission done"
 
 # Defaults, overridden by the config file.
 VOLUME=70
-SOUND_question=chime
-SOUND_permission=knock
-SOUND_done=marimba
+SOUND_question=uthjaa
+SOUND_permission=aayein
+SOUND_done=khatam
 # shellcheck disable=SC1090
 [ -f "$CONF" ] && . "$CONF"
 
