@@ -19,7 +19,7 @@
       <span class="wordmark-dot" aria-hidden="true"></span>terminal-alert
     </a>
     <nav aria-label="Site">
-      <a href="#ask-first">Ask-first prompt</a>
+      <a href="#ask-first" class="nav-save">Ask-first prompt <span class="nav-chip">saves tokens</span></a>
       <a href="#how">How it works</a>
       <a href="https://github.com/Sak3ham/terminal-alert">GitHub</a>
     </nav>
@@ -28,7 +28,7 @@
   <main>
     <section class="hero">
       <h1>Never miss the moment <mark>Claude gets <span class="stuck">stuck.</span></mark></h1>
-      <p class="lede">Claude's own notification is polite. Your attention span is not. One Instagram reel turns into forty while Claude sits there waiting on you. terminal-alert plays a sound you cannot miss the moment Claude Code needs you, even when your Mac is on mute.</p>
+      <p class="lede">Claude's own notification is polite. Your attention span is not. One Instagram reel turns into forty while Claude sits there waiting on you. Terminal-alert plays a sound you cannot miss the moment Claude Code needs you, even when your Mac is on mute.</p>
     </section>
 
     <section class="machine" id="machine">
@@ -40,22 +40,31 @@
       <div class="slots" role="radiogroup" aria-labelledby="slots-title">
         <div class="slot" data-slot="question">
           <button class="slot-arm" role="radio" aria-checked="true">
-            <span class="slot-name">Claude asks a question</span>
-            <span class="slot-sound" data-sound-name>Uth jaa</span>
+            <span class="slot-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"><path d="M9.2 9.3a2.9 2.9 0 1 1 4.6 2.3c-1 .7-1.8 1.300-1.8 2.600"/><path d="M12 17.600v.1"/></svg></span>
+            <span class="slot-text">
+              <span class="slot-name">Claude asks a question</span>
+              <span class="slot-sound"><span class="slot-label">Sound</span><span class="slot-pick" data-sound-name>Uth jaa</span></span>
+            </span>
           </button>
           <label class="switch"><input type="checkbox" checked data-toggle><span class="switch-track" aria-hidden="true"></span><span class="sr">Alert me when Claude asks a question</span></label>
         </div>
         <div class="slot" data-slot="permission">
           <button class="slot-arm" role="radio" aria-checked="false">
-            <span class="slot-name">Claude needs permission</span>
-            <span class="slot-sound" data-sound-name>Aayein</span>
+            <span class="slot-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="10.500" width="12" height="8.500" rx="2"/><path d="M8.800 10.500V8a3.200 3.200 0 0 1 6.400 0v2.500"/></svg></span>
+            <span class="slot-text">
+              <span class="slot-name">Claude needs permission</span>
+              <span class="slot-sound"><span class="slot-label">Sound</span><span class="slot-pick" data-sound-name>Aayein</span></span>
+            </span>
           </button>
           <label class="switch"><input type="checkbox" checked data-toggle><span class="switch-track" aria-hidden="true"></span><span class="sr">Alert me when Claude needs permission</span></label>
         </div>
         <div class="slot" data-slot="done">
           <button class="slot-arm" role="radio" aria-checked="false">
-            <span class="slot-name">Claude finishes its turn</span>
-            <span class="slot-sound" data-sound-name>Khatam</span>
+            <span class="slot-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"><path d="M5.500 12.500l4.200 4.200L18.500 7.800"/></svg></span>
+            <span class="slot-text">
+              <span class="slot-name">Claude finishes its turn</span>
+              <span class="slot-sound"><span class="slot-label">Sound</span><span class="slot-pick" data-sound-name>Khatam</span></span>
+            </span>
           </button>
           <label class="switch"><input type="checkbox" checked data-toggle><span class="switch-track" aria-hidden="true"></span><span class="sr">Alert me when Claude finishes its turn</span></label>
         </div>

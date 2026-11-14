@@ -91,6 +91,13 @@ code { font-family: var(--mono); font-size: 0.88em; }
 .top nav { display: flex; gap: 24px; font-size: 14px; font-weight: 500; color: var(--muted); }
 .top nav a { padding: 6px 0; transition: color 0.2s; }
 .top nav a:hover { color: var(--ink); }
+.nav-save { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); }
+.nav-chip {
+  font-family: var(--hand); font-size: 14px; line-height: 1.5; color: #1e1e1e;
+  background: var(--marker); padding: 0 8px; border-radius: 8px; transform: rotate(-3deg);
+  transition: transform 0.3s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.nav-save:hover .nav-chip { transform: rotate(3deg) scale(1.08); }
 
 /* ---- hero -------------------------------------------------------------- */
 .hero { padding-block: 104px 0; }
@@ -136,25 +143,49 @@ h2 {
 /* ---- picker ------------------------------------------------------------ */
 .machine { padding-block: 136px 0; }
 
-.slots { margin-top: 44px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.slots { margin-top: 52px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+/* Alert cards: sketched like the keys, each with its own colour and icon. */
 .slot {
-  display: flex; align-items: center; gap: 8px;
-  background: var(--card); border-radius: 18px; padding-right: 20px;
-  box-shadow: inset 0 0 0 1px var(--line);
-  transition: box-shadow 0.25s var(--ease);
+  --tint: var(--sky);
+  position: relative; display: flex; align-items: center; gap: 10px;
+  background: var(--card); border: 2px solid #1e1e1e; border-radius: 18px; padding-right: 18px;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
-.slot.is-armed { box-shadow: inset 0 0 0 2px var(--ink), 0 10px 24px -14px rgba(0, 0, 0, 0.35); }
+.slot[data-slot="permission"] { --tint: var(--marker); }
+.slot[data-slot="done"] { --tint: #8ce99a; }
+.slot.is-armed { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 #1e1e1e; }
+/* A sticker on the card whose sound is being chosen. */
+.slot.is-armed::before {
+  content: "choosing its sound"; position: absolute; top: -13px; left: 16px; transform: rotate(-2deg);
+  font-family: var(--hand); font-size: 13px; line-height: 1.5; white-space: nowrap;
+  background: var(--marker); color: #1e1e1e;
+  padding: 0 8px; border: 1.5px solid #1e1e1e; border-radius: 8px;
+}
 .slot-arm {
   flex: 1; min-width: 0; text-align: left; background: none; border: 0;
-  padding: 20px 4px 20px 22px; border-radius: 18px;
-  display: flex; flex-direction: column; gap: 3px;
+  padding: 20px 0 20px 18px; border-radius: 16px;
+  display: flex; align-items: center; gap: 14px;
 }
-.slot-name { font-size: 13px; font-weight: 500; color: var(--muted); }
-.slot-sound {
-  font-size: 21px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2;
+.slot-icon {
+  flex: none; width: 46px; height: 46px; border-radius: 13px;
+  background: var(--tint); color: #1e1e1e; border: 2px solid #1e1e1e;
+  display: grid; place-items: center;
+  transition: transform 0.3s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.slot-icon svg { width: 24px; height: 24px; }
+.slot.is-armed .slot-icon { transform: rotate(-6deg) scale(1.06); }
+.slot-text { min-width: 0; display: flex; flex-direction: column; gap: 7px; }
+.slot-name { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+.slot-sound { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.slot-label { font-size: 12px; font-weight: 600; color: var(--muted); }
+.slot-pick {
+  font-family: var(--hand); font-size: 15px; line-height: 1.5; color: #1e1e1e;
+  background: var(--pill); padding: 0 9px; border-radius: 8px;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-.slot.is-off .slot-sound { color: #a1a1a6; text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.slot.is-off .slot-icon { background: var(--pill); }
+.slot.is-off .slot-name { color: var(--muted); }
+.slot.is-off .slot-pick { color: var(--muted); }
 
 .switch { position: relative; flex: none; display: inline-flex; cursor: pointer; }
 .switch input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
@@ -213,7 +244,7 @@ h2 {
 .pad.is-playing .pad-secs { color: #1e1e1e; }
 
 /* custom link */
-.custom { margin-top: 44px; }
+.custom { margin-top: 52px; }
 .custom > label { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
 .custom-row { margin-top: 12px; display: flex; gap: 10px; }
 .custom input {
@@ -411,7 +442,7 @@ input[type="range"]::-moz-range-thumb {
   .note-toggle { margin: 4px 0 -6px; align-self: flex-end; font-size: 17px; }
   .note-toggle span { white-space: nowrap; }
   .note-toggle svg { width: 62px; height: 30px; margin: 0 4px -14px -6px; }
-  .slots { gap: 12px; }
+  .slots { gap: 20px; }
   .slots { grid-template-columns: minmax(0, 1fr); }
   .keys-row .pads { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }

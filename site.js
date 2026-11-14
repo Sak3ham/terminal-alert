@@ -229,7 +229,7 @@
       const arm = $(".slot-arm", el);
       arm.setAttribute("aria-checked", String(armed));
       arm.tabIndex = armed ? 0 : -1;
-      $("[data-sound-name]", el).textContent = soundLabel(slot.sound);
+      $("[data-sound-name]", el).textContent = slot.on ? soundLabel(slot.sound) : "Off";
       $("[data-toggle]", el).checked = slot.on;
     });
 
