@@ -6,7 +6,7 @@ You give Claude a big task and switch to something else. Twenty minutes later yo
 
 terminal-alert plays a sound the moment Claude needs you. It works even when your Mac is muted: it unmutes, raises the volume, plays the sound, then puts your volume back exactly as it was.
 
-**[terminal-alert.vercel.app](https://terminal-alert.vercel.app)**: hear the sounds, pick one per alert, and copy a ready-made install command.
+**[terminal-alert.vercel.app](https://terminal-alert.vercel.app)**: hear all 20 meme sounds, pick one per alert or paste a link to your own, and copy a ready-made install command.
 
 ## Install
 
@@ -38,17 +38,27 @@ Out of the box, three meme clips do the talking:
 | `permission` | `aayein`: "Aayein?" |
 | `done` | `khatam`: "Khatam." |
 
-Prefer something plainer? `chime`, `knock`, `coin`, `airhorn` and `alarm` are included too.
+Seventeen more are included: `baapre`, `chaloo`, `baigan`, `chacha`, `lekinyesala`, `aag`, `boxbox`, `quack`, `fart`, `rizz`, `shocked`, `ack`, `cricket`, `kuchupuchu`, `merijung`, `bhojyam`, `dexter`. Some clips contain strong language.
 
-Use your own: drop any `.wav`, `.mp3`, `.aiff` or `.m4a` into `~/.terminal-alert/sounds/` and select it by file name.
+### Bring your own
+
+Give any alert a link instead of a name and the installer downloads it:
+
+```bash
+curl -fsSL https://terminal-alert.vercel.app/install | bash -s -- --question 'https://example.com/sound.mp3'
+```
+
+Direct `.mp3`, `.wav`, `.m4a` and `.mp4` links work, and so do myinstants.com pages.
+
+Already have the file? Drop any `.wav`, `.mp3`, `.aiff` or `.m4a` into `~/.terminal-alert/sounds/` and select it by file name.
 
 ## Change things later
 
 ```bash
 terminal-alert status                 # what is on, which sounds, what volume
 terminal-alert sounds                 # list sounds
-terminal-alert preview airhorn        # hear one
-terminal-alert set question airhorn   # change a sound
+terminal-alert preview fart           # hear one
+terminal-alert set question fart      # change a sound
 terminal-alert volume 80              # volume alerts are forced to
 terminal-alert enable done            # turn an alert on
 terminal-alert disable permission     # turn an alert off
@@ -84,7 +94,7 @@ curl -fsSL https://terminal-alert.vercel.app/install | bash -s -- --question uth
 
 | Flag | Meaning |
 |---|---|
-| `--question`, `--permission`, `--done` | Turn that alert on with the sound you name, e.g. `--done fanfare` |
+| `--question`, `--permission`, `--done` | Turn that alert on with the sound you name or link to, e.g. `--done khatam` |
 | `--events` | Comma-separated: `question`, `permission`, `done` |
 | `--sound` | One sound for all chosen alerts |
 | `--volume` | 0 to 100 |
@@ -112,6 +122,6 @@ Your other settings and hooks are left untouched, and a copy of the previous fil
 
 ## Sounds and licence
 
-The code and the five synthesised sounds (built by [`sounds/generate.py`](sounds/generate.py)) are MIT licensed.
+The code is MIT licensed.
 
-The three meme clips are third-party audio and are not covered by that licence. Sources and takedown contact are in [`sounds/THIRD-PARTY.md`](sounds/THIRD-PARTY.md).
+The bundled sounds are third-party meme clips and are not covered by that licence. Sources and takedown contact are in [`sounds/THIRD-PARTY.md`](sounds/THIRD-PARTY.md).

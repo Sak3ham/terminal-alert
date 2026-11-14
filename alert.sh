@@ -16,7 +16,7 @@ SOUND_done=khatam
 [ -f "$CONF" ] && . "$CONF"
 
 sound_file() {
-  # Accepts a bundled name ("chime") or a path to any file afplay can read.
+  # Accepts a bundled name ("khatam") or a path to any file afplay can read.
   if [ -f "$1" ]; then echo "$1"; return; fi
   for ext in wav aiff aif mp3 m4a caf; do
     if [ -f "$DIR/sounds/$1.$ext" ]; then echo "$DIR/sounds/$1.$ext"; return; fi

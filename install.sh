@@ -4,7 +4,7 @@
 #   curl -fsSL https://raw.githubusercontent.com/Sak3ham/terminal-alert/main/install.sh | bash
 #
 # Skip the questions with flags:
-#   ... | bash -s -- --events question,permission --sound chime --volume 70 --ask-first
+#   ... | bash -s -- --events question,permission --sound khatam --volume 70 --ask-first
 #   ... | bash -s -- --question uthjaa --done khatam --volume 80
 #   ... | bash -s -- --yes        (defaults: question + permission alerts)
 set -e
