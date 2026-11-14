@@ -35,9 +35,8 @@
   const commandEl = $("#command");
   const noteEl = $("#out-note");
   const copyCommand = $("#copy-command");
-  const macEl = $(".mac");
   const macState = $("#mac-state");
-  const macBar = $("#mac-bar");
+  const MAC_IDLE = macState.textContent;
   const volumeEl = $("#volume");
   const volumeOut = $("#volume-out");
   const customForm = $("#custom-form");
@@ -98,21 +97,29 @@
     playing = null;
   }
 
-  // The meter acts out what the real script does to a muted Mac.
+  // One line that says what the real script is doing to the Mac right now.
   function showForced() {
     clearTimeout(macTimer);
-    macEl.dataset.state = "forced";
-    macState.textContent = `Unmuted, forced to ${state.volume}%`;
-    macBar.style.width = state.volume + "%";
+    macState.classList.add("is-live");
+    macState.textContent = `On your Mac: unmuted, playing at ${state.volume}%.`;
   }
   function showRestored() {
-    macEl.dataset.state = "restored";
-    macState.textContent = "Put back on mute";
-    macBar.style.width = "0%";
+    macState.textContent = "On your Mac: volume put back.";
     macTimer = setTimeout(() => {
-      macEl.dataset.state = "muted";
-      macState.textContent = "Your Mac: muted";
+      macState.classList.remove("is-live");
+      macState.textContent = MAC_IDLE;
     }, 1600);
+  }
+
+  // Replay whatever the selected alert uses, so a volume change can be heard.
+  // Works for a pasted link too, when the browser can play it.
+  function previewArmed() {
+    const sound = state.slots[state.armed].sound;
+    if (typeof sound === "object") {
+      if (sound.playable) play(sound.clip, null).catch(() => {});
+      return;
+    }
+    $(`.pad[data-sound="${sound}"]`).click();
   }
 
   // ---- slots --------------------------------------------------------------
@@ -142,8 +149,10 @@
 
   volumeEl.addEventListener("input", () => {
     state.volume = Number(volumeEl.value);
+    if (playing) playing.audio.volume = state.volume / 100;
     render();
   });
+  volumeEl.addEventListener("change", previewArmed);
   $("#ask-first-flag").addEventListener("change", (e) => {
     state.askFirst = e.target.checked;
     render();
@@ -178,13 +187,17 @@
       return;
     }
     const alert = TAGS[state.armed];
-    state.slots[state.armed].sound = { url: href };
+    const sound = { url: href, clip: new Audio(href), playable: false };
+    state.slots[state.armed].sound = sound;
     state.slots[state.armed].on = true;
     render();
     // Preview where the browser can. Page links (myinstants) only resolve at install.
-    play(new Audio(href), null).then(
-      () => setCustomNote(`Playing your link. It is set for the ${alert} alert.`),
-      () => setCustomNote(`Set for the ${alert} alert. The browser cannot preview this link, but the installer will fetch it.`)
+    play(sound.clip, null).then(
+      () => {
+        sound.playable = true;
+        setCustomNote(`Playing your link at ${state.volume}%. Move the volume slider to hear it louder or quieter.`);
+      },
+      () => setCustomNote(`Set for the ${alert} alert. The browser cannot preview this link, but the installer will fetch it and play it at ${state.volume}%.`)
     );
   });
   customUrl.addEventListener("input", () => setCustomNote(CUSTOM_HINT, false));

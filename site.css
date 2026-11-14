@@ -234,18 +234,22 @@ h2 {
 .custom-note { margin-top: 10px; font-size: 13px; color: var(--muted); }
 .custom-note.is-error { color: var(--alert-text); }
 
-/* volume and the simulated Mac */
-.controls {
-  margin-top: 56px; padding-top: 44px; border-top: 1px solid var(--line);
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: start;
+/* sound keys with the volume beside them */
+.keys-row {
+  margin-top: 56px;
+  display: grid; grid-template-columns: minmax(0, 1fr) 232px; gap: 48px; align-items: start;
 }
+.keys-row .pads { margin-top: 0; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.level { position: sticky; top: 32px; }
 .level > label { display: flex; justify-content: space-between; align-items: baseline; font-size: 15px; font-weight: 600; }
-.level output { font-size: 21px; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.level output { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.level-note { margin-top: 12px; font-size: 13px; color: var(--muted); }
+.level-note.is-live { color: var(--alert-text); font-weight: 600; }
 
 input[type="range"] {
   --fill: 66%;
   appearance: none; -webkit-appearance: none;
-  width: 100%; height: 36px; margin: 4px 0 0; background: none; cursor: grab;
+  width: 100%; height: 36px; margin: 8px 0 0; background: none; cursor: grab;
 }
 input[type="range"]::-webkit-slider-runnable-track {
   height: 6px; border-radius: 3px;
@@ -263,19 +267,6 @@ input[type="range"]::-moz-range-thumb {
   width: 26px; height: 26px; border: 0; border-radius: 50%;
   background: #fff; box-shadow: 0 0 0 1px var(--line), 0 3px 8px rgba(0, 0, 0, 0.2);
 }
-
-.mac-head { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; }
-.mac-icon { width: 22px; height: 22px; flex: none; }
-.mac-wave { display: none; }
-.mac[data-state="forced"] .mac-wave { display: inline; }
-.mac[data-state="forced"] .mac-cross { display: none; }
-.mac[data-state="forced"] .mac-head { color: var(--alert-text); }
-.mac-meter { margin-top: 14px; height: 6px; border-radius: 3px; background: var(--pill); overflow: hidden; }
-#mac-bar {
-  display: block; height: 100%; width: 0; border-radius: inherit; background: var(--alert);
-  transition: width 0.45s var(--ease);
-}
-.mac-note { margin-top: 10px; font-size: 13px; color: var(--muted); }
 
 /* command: a dark tile on the light page */
 .out {
@@ -372,12 +363,12 @@ input[type="range"]::-moz-range-thumb {
 
 .note-keys { align-items: flex-start; justify-content: flex-end; margin: 14px 6px 0 0; }
 .note-keys svg { width: 84px; height: 49px; }
-.note-keys span, .note-volume span { margin-top: 20px; }
+.note-keys span { margin-top: 20px; }
 
-.note-volume { align-items: flex-start; margin-top: 10px; }
-.note-volume svg { width: 84px; height: 49px; }
+.note-volume { flex-direction: column; align-items: flex-start; margin-top: 18px; }
+.note-volume svg { width: 70px; height: 41px; margin-bottom: -6px; }
 
-.note-copy { justify-content: flex-end; margin: 48px 34px 4px 0; }
+.note-copy { justify-content: flex-end; margin: 64px 34px 4px 0; }
 .note-copy svg { width: 84px; height: 54px; margin-bottom: -16px; }
 
 /* ---- how --------------------------------------------------------------- */
@@ -409,7 +400,9 @@ input[type="range"]::-moz-range-thumb {
 
 /* ---- responsive -------------------------------------------------------- */
 @media (max-width: 900px) {
-  .pads { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .keys-row { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  /* Stacked, volume goes above the keys so it is not a long scroll away. */
+  .level { position: static; max-width: 420px; order: -1; }
   .prompt-section, .how-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .prompt-copy .hand-note svg { transform: rotate(62deg); width: 110px; height: 52px; margin: 0 0 -6px 4px; }
 }
@@ -419,9 +412,8 @@ input[type="range"]::-moz-range-thumb {
   .note-toggle span { white-space: nowrap; }
   .note-toggle svg { width: 62px; height: 30px; margin: 0 4px -14px -6px; }
   .slots { gap: 12px; }
-  .controls { margin-top: 44px; padding-top: 36px; }
   .slots { grid-template-columns: minmax(0, 1fr); }
-  .controls { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .keys-row .pads { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 640px) {
   .top, .hero, .machine, .prompt-section, .how, .close { padding-inline: 16px; }
@@ -430,7 +422,8 @@ input[type="range"]::-moz-range-thumb {
   .machine { padding-top: 88px; }
   .prompt-section, .how { padding-top: 120px; }
   .close { margin-top: 120px; }
-  .pads { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 44px; }
+  .keys-row { margin-top: 44px; }
+  .keys-row .pads { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .custom { margin-top: 36px; }
   .note-copy { margin-top: 36px; }
   .custom-row { flex-direction: column; }
