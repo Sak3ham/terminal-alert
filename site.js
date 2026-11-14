@@ -284,5 +284,34 @@
   copyCommand.addEventListener("click", () => copy(copyCommand, commandText(buildCommand()), "Copy"));
   $("#copy-prompt").addEventListener("click", (e) => copy(e.currentTarget, $("#prompt-text").textContent, "Copy prompt"));
 
+  // ---- story deck -------------------------------------------------------
+  const deck = $("#story-deck");
+  const cards = $$(".story-card", deck);
+  let top = 0;
+  const place = () => cards.forEach((card, i) => {
+    card.dataset.pos = (i - top + cards.length) % cards.length;
+  });
+  function shuffle() {
+    const leaving = cards[top];
+    leaving.classList.add("is-leaving");
+    setTimeout(() => {
+      top = (top + 1) % cards.length;
+      place();
+      leaving.classList.remove("is-leaving");
+    }, 320);
+  }
+  place();
+  let deckTimer = null;
+  const autoplay = () => {
+    clearInterval(deckTimer);
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) deckTimer = setInterval(shuffle, 2800);
+  };
+  deck.addEventListener("click", () => {
+    shuffle();
+    autoplay();
+  });
+  document.addEventListener("visibilitychange", () => (document.hidden ? clearInterval(deckTimer) : autoplay()));
+  autoplay();
+
   render();
 })();

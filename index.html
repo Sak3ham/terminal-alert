@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>terminal-alert: a sound you cannot miss when Claude Code is waiting</title>
   <meta name="description" content="Never miss the moment Claude Code gets stuck waiting on you. terminal-alert plays a meme sound you cannot miss, even when your Mac is on mute. One command to install.">
+  <link rel="preload" as="image" href="peeps/work.png">
   <meta property="og:title" content="terminal-alert">
   <meta property="og:description" content="A sound you cannot miss when Claude Code is waiting on you. Works even on mute.">
   <meta name="theme-color" content="#fbfbfd">
@@ -27,8 +28,20 @@
 
   <main>
     <section class="hero">
+      <div class="hero-copy">
       <h1>Never miss the moment <mark>Claude gets <span class="stuck">stuck.</span></mark></h1>
       <p class="lede">Claude's own notification is polite. Your attention span is not. One Instagram reel turns into forty while Claude sits there waiting on you. Terminal-alert plays a sound you cannot miss the moment Claude Code needs you, even when your Mac is on mute.</p>
+      </div>
+
+      <div class="story">
+        <button class="story-deck" id="story-deck" type="button" aria-label="Next part of the story">
+          <span class="story-card" data-tint="sky"><img src="peeps/work.png" alt="" width="719" height="760"><span class="story-line">You hand Claude a big task.</span></span>
+          <span class="story-card" data-tint="pink"><img src="peeps/scroll.png" alt="" width="566" height="760"><span class="story-line">Then, just one reel…</span></span>
+          <span class="story-card" data-tint="sun"><img src="peeps/alert.png" alt="" width="673" height="760"><span class="story-line">Uth jaa! Claude needs you.</span></span>
+          <span class="story-card" data-tint="mint"><img src="peeps/back.png" alt="" width="719" height="760"><span class="story-line">And you are back in seconds.</span></span>
+        </button>
+        <p class="sr">The story in four cards: you hand Claude a big task, you drift off to watch one reel, the alert shouts that Claude needs you, and you are back in seconds.</p>
+      </div>
     </section>
 
     <section class="machine" id="machine">
