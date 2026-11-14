@@ -1,4 +1,12 @@
+/* Hand lettering for sketched notes, the same face as the portfolio. */
+@font-face {
+  font-family: "Excalifont";
+  src: local("Excalifont"), url("Excalifont-Regular.woff2") format("woff2");
+  font-display: swap;
+}
+
 :root {
+  --hand: "Excalifont", "Comic Sans MS", "Marker Felt", cursive;
   /* Same paper, ink and system type as Saksham's portfolio projects. */
   --sf: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, monospace;
@@ -307,6 +315,15 @@ input[type="range"]::-moz-range-thumb {
 .prompt-card .copy:hover { background: #3a3a3c; }
 .prompt-card .copy.is-done { background: var(--ok); color: #fff; }
 
+/* A sketched note pointing at the prompt, Excalidraw style. */
+.prompt-copy .hand-note {
+  margin-top: 36px; display: flex; align-items: flex-end; gap: 6px;
+  font-family: var(--hand); font-size: clamp(19px, 1.8vw, 22px); line-height: 1.25;
+  color: #1e1e1e;
+}
+.hand-note span { max-width: 15em; transform: rotate(-2deg); transform-origin: left bottom; }
+.hand-note svg { flex: none; width: 150px; height: 70px; margin-bottom: 14px; color: var(--alert-text); }
+
 /* ---- how --------------------------------------------------------------- */
 .how { padding-block: 150px 0; }
 .how h2 { max-width: 16ch; }
@@ -338,6 +355,7 @@ input[type="range"]::-moz-range-thumb {
 @media (max-width: 900px) {
   .pads { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .prompt-section, .how-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .hand-note svg { transform: rotate(62deg); width: 110px; height: 52px; margin: 0 0 -6px 4px; }
 }
 @media (max-width: 760px) {
   .slots { grid-template-columns: minmax(0, 1fr); }
