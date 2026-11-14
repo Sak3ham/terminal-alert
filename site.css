@@ -174,7 +174,7 @@ h1 {
 .slot.is-off .slot-sound { opacity: 0.55; }
 
 .tag {
-  font-family: var(--body); font-weight: 700; font-size: 0.66rem;
+  font-family: var(--body); font-weight: 700; font-size: 0.72rem;
   text-transform: uppercase; letter-spacing: 0.05em; line-height: 1;
   background: var(--ink); color: var(--white);
   padding: 0.22rem 0.36rem; border-radius: 0.3rem;
@@ -438,7 +438,7 @@ input[type="range"]::-moz-range-thumb {
   .machine { grid-template-columns: minmax(0, 1fr); grid-template-areas: "slots" "pads" "level" "out"; }
   .pad { border-radius: 0.7rem; }
   .pad-name { font-size: 0.74rem; }
-  .pad .tag { font-size: 0.56rem; padding: 0.18rem 0.26rem; }
+  .pad .tag { font-size: 0.69rem; padding: 0.18rem 0.24rem; letter-spacing: 0.02em; }
   .facts > div { grid-template-columns: minmax(0, 1fr); gap: 0.15rem; }
   .out-head { flex-wrap: wrap; }
 }
